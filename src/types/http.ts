@@ -3,7 +3,7 @@ export interface Character {
   films: string[];
 }
 
-export interface SwapiResponse {
+export interface SwapiAllCharactersResponse {
   count: number;
   next: string | null;
   previous: string | null;

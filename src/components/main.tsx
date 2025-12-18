@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Character } from "../types/http";
 import { CharacterCard } from "./character-card";
 import { CharacterCardSkeleton } from "./character-skeleton";
-import { ErrorCard } from "./error";
+import { ErrorCard } from "./error-card";
 
 export const Main = () => {
   const { data, isLoading, error, refetch } = useQuery<Character[], Error>({
@@ -28,7 +28,7 @@ export const Main = () => {
   return (
     <div className="flex-1 overflow-y-auto px-6 mt-4 mb-4 custom-scrollbar">
       {error && <ErrorCard message={error.message} refetch={refetch} />}
-      <div className="mb-7 grid grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-7 justify-items-center">
         {isLoading &&
           Array.from({ length: 21 }).map((_, i) => (
             <CharacterCardSkeleton key={i} />
