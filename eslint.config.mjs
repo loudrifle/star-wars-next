@@ -1,15 +1,13 @@
-// .eslintrc.js
 import { FlatCompat } from "@eslint/eslintrc";
+import eslint from "@eslint/js";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import eslint from "@eslint/js";
 
 import tseslint from "typescript-eslint";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Compat per estendere configurazioni legacy
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
 export default [
@@ -64,7 +62,7 @@ export default [
       "prefer-const": "error",
       eqeqeq: ["error", "always"],
 
-      // Next.js best practices
+      // Next.js
       "@next/next/no-html-link-for-pages": ["error", "app"],
       "@next/next/no-img-element": "warn",
     },
