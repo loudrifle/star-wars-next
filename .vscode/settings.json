@@ -1,6 +1,7 @@
 {
   "eslint.enable": true,
   "editor.formatOnSave": true,
+  "editor.rulers": [80],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always",
     "source.addMissingImports.ts": "always",
@@ -9,5 +10,5 @@
     "source.removeUnused.ts": "always",
     "source.removeUnusedImports": "always",
     "source.sortImports": "always"
-  }
+  },
 }

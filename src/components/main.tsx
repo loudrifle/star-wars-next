@@ -1,9 +1,9 @@
 "use client";
+import { CharacterCard } from "@/components/character-card";
+import { CharacterCardSkeleton } from "@/components/character-skeleton";
+import { ErrorCard } from "@/components/error-card";
+import { Character } from "@/types/http";
 import { useQuery } from "@tanstack/react-query";
-import { Character } from "../types/http";
-import { CharacterCard } from "./character-card";
-import { CharacterCardSkeleton } from "./character-skeleton";
-import { ErrorCard } from "./error-card";
 
 export const Main = () => {
   const { data, isLoading, error, refetch } = useQuery<Character[], Error>({
