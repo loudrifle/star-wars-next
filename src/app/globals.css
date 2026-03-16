@@ -1,50 +1,166 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: #050505;
+  --color-foreground: #f0e6c8;
+
+  --color-sw-black: #050505;
+  --color-sw-dark: #0f0e0c;
+  --color-sw-card: #141210;
+  --color-sw-card-hover: #1c1a16;
+  --color-sw-border: #2a2416;
+  --color-sw-border-hover: #4a4030;
+  --color-sw-gold: #ffe81f;
+  --color-sw-gold-dim: #c8a84b;
+  --color-sw-amber: #d4a017;
+  --color-sw-text: #f0e6c8;
+  --color-sw-muted: #8a7a5a;
+  --color-sw-red: #c0392b;
+  --color-sw-blue: #2e86c1;
+
+  --font-display: var(--font-bebas);
+  --font-sans: var(--font-space);
+  --font-mono: "Courier New", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #050505;
+  color: #f0e6c8;
+  font-family: var(--font-space), "Space Grotesk", sans-serif;
+  min-height: 100vh;
 }
 
+/* Subtle film grain overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Scrollbar ── */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+  scrollbar-color: #2a2416 transparent;
 }
-
-/* Chrome / Edge / Safari */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+.custom-scrollbar::-webkit-scrollbar { width: 5px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.25);
+  background: #2a2416;
   border-radius: 999px;
-  transition: background 0.2s ease;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #c8a84b; }
+
+/* ── Opening Crawl ── */
+.crawl-scene {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.45);
+.crawl-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 40%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 10%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 55%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 30%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 70%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 5% 80%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 95% 90%, #fff 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 35% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(2px 2px at 20% 90%, rgba(255,255,255,0.3) 0%, transparent 100%);
+}
+
+.crawl-intro {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  animation: fadeInIntro 2s ease forwards;
+}
+
+@keyframes fadeInIntro {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.crawl-perspective {
+  perspective: 400px;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.crawl-content {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: min(600px, 85vw);
+  transform-origin: 50% 100%;
+  animation: crawlRoll 90s linear forwards;
+  padding-bottom: 10vh;
+}
+
+@keyframes crawlRoll {
+  from {
+    transform: translateX(-50%) perspective(400px) rotateX(22deg) translateY(100vh);
+  }
+  to {
+    transform: translateX(-50%) perspective(400px) rotateX(22deg) translateY(-350%);
+  }
+}
+
+.crawl-top-fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 35vh;
+  background: linear-gradient(to bottom, #000 40%, transparent 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.crawl-bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20vh;
+  background: linear-gradient(to top, #000 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ── Entity card ── */
+.entity-card {
+  background-color: #141210;
+  border: 1px solid #2a2416;
+  border-radius: 0.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+}
+.entity-card:hover {
+  border-color: #c8a84b;
+  box-shadow: 0 0 24px rgba(200, 168, 75, 0.12);
+  transform: translateY(-2px);
 }

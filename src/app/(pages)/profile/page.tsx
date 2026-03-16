@@ -1,0 +1,160 @@
+import { eq } from "drizzle-orm";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+
+import { PageHeader } from "@/components/page-header";
+import { Badge } from "@/components/ui/badge";
+import { db } from "@/db";
+import { favorites, ratings } from "@/db/schema";
+import { auth } from "@/lib/auth";
+
+export const metadata: Metadata = { title: "Profile" };
+
+const ENTITY_LABELS: Record<string, string> = {
+  character: "Characters",
+  film: "Films",
+  planet: "Planets",
+  species: "Species",
+  starship: "Starships",
+  vehicle: "Vehicles",
+};
+
+const ENTITY_PATHS: Record<string, string> = {
+  character: "/characters",
+  film: "/films",
+  planet: "/planets",
+  species: "/species",
+  starship: "/starships",
+  vehicle: "/vehicles",
+};
+
+export default async function ProfilePage() {
+  const session = await auth();
+  if (!session?.user?.id) redirect("/");
+
+  const userId = session.user.id;
+
+  const [userFavorites, userRatings] = await Promise.all([
+    db.select().from(favorites).where(eq(favorites.userId, userId)).all(),
+    db
+      .select()
+      .from(ratings)
+      .where(eq(ratings.userId, userId))
+      .orderBy(ratings.score)
+      .all(),
+  ]);
+
+  // Group favorites by entity type
+  const favoritesByType = userFavorites.reduce<
+    Record<string, { id: number }[]>
+  >((acc, fav) => {
+    if (!acc[fav.entityType]) acc[fav.entityType] = [];
+    acc[fav.entityType].push({ id: fav.entityId });
+    return acc;
+  }, {});
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-10">
+      {/* User card */}
+      <div className="flex items-center gap-4 mb-8 p-5 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
+        {session.user.image && (
+          <Image
+            src={session.user.image}
+            alt={session.user.name ?? "User"}
+            width={56}
+            height={56}
+            className="rounded-full border-2 border-[var(--color-sw-border)]"
+          />
+        )}
+        <div>
+          <h2
+            className="text-[var(--color-sw-gold)]"
+            style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", fontSize: "1.75rem", letterSpacing: "0.08em" }}
+          >
+            {session.user.name}
+          </h2>
+          <p className="text-xs text-[var(--color-sw-muted)]">{session.user.email}</p>
+        </div>
+        <div className="ml-auto text-right">
+          <p className="text-[var(--color-sw-gold)] text-2xl" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}>
+            {userFavorites.length}
+          </p>
+          <p className="text-[10px] text-[var(--color-sw-muted)] uppercase tracking-widest">Favorites</p>
+        </div>
+        <div className="text-right">
+          <p className="text-[var(--color-sw-gold)] text-2xl" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}>
+            {userRatings.length}
+          </p>
+          <p className="text-[10px] text-[var(--color-sw-muted)] uppercase tracking-widest">Ratings</p>
+        </div>
+      </div>
+
+      {/* Favorites */}
+      <section className="mb-10">
+        <PageHeader title="Favorites" />
+        {userFavorites.length === 0 ? (
+          <p className="text-[var(--color-sw-muted)] text-sm">
+            No favorites yet. Browse the galaxy and save what you love!
+          </p>
+        ) : (
+          <div className="space-y-4">
+            {Object.entries(favoritesByType).map(([type, items]) => (
+              <div key={type} className="p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
+                <h3
+                  className="text-[var(--color-sw-gold-dim)] mb-3"
+                  style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", letterSpacing: "0.15em", fontSize: "0.85rem" }}
+                >
+                  {ENTITY_LABELS[type] ?? type} ({items.length})
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {items.map((item) => (
+                    <Link key={item.id} href={`${ENTITY_PATHS[type] ?? ""}/${item.id}`}>
+                      <Badge variant="gold" className="cursor-pointer">
+                        #{item.id}
+                      </Badge>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Ratings */}
+      <section>
+        <PageHeader title="My Ratings" />
+        {userRatings.length === 0 ? (
+          <p className="text-[var(--color-sw-muted)] text-sm">
+            No ratings yet. Visit any entity page to rate it!
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {userRatings.map((r) => (
+              <Link
+                key={r.id}
+                href={`${ENTITY_PATHS[r.entityType] ?? ""}/${r.entityId}`}
+                className="flex items-center gap-3 p-3 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded hover:border-[var(--color-sw-gold-dim)] transition-colors"
+              >
+                <Badge>{ENTITY_LABELS[r.entityType] ?? r.entityType}</Badge>
+                <span className="text-sm text-[var(--color-sw-muted)]">#{r.entityId}</span>
+                <div className="ml-auto flex gap-0.5">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span
+                      key={star}
+                      className={star <= r.score ? "text-[var(--color-sw-gold)]" : "text-[var(--color-sw-border)]"}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}

@@ -1,11 +1,5 @@
-import { Header } from "@/components/header";
-import { Main } from "@/components/main";
+import { Crawl } from "@/components/crawl";
 
-export default function Home() {
-  return (
-    <div className="h-screen flex flex-col bg-cover bg-[url(/bg.jpg)]">
-      <Header />
-      <Main />
-    </div>
-  );
+export default function HomePage() {
+  return <Crawl />;
 }
