@@ -18,6 +18,8 @@ Built as a portfolio project to showcase modern full-stack development with the 
 
 ## Features
 
+- 🚀 Opening crawl cinematic homepage
+- 🏠 Galaxy Explorer hub — project guide and category overview
 - 🎬 Browse all 6 Star Wars films with full details
 - 👤 Explore 80+ characters with photos, stats and relationships
 - 🪐 Discover planets, species, starships and vehicles
@@ -26,7 +28,6 @@ Built as a portfolio project to showcase modern full-stack development with the 
 - ❤️ Save favorites (requires login)
 - ⭐ Rate any entity 1–5 stars (requires login)
 - 👤 Personal profile page with your favorites and ratings
-- 🚀 Opening crawl cinematic homepage
 
 ## Project Structure
 
@@ -35,6 +36,7 @@ src/
 ├── actions/          # Server Actions (favorites, ratings)
 ├── app/
 │   ├── (pages)/      # Route group with navbar
+│   │   ├── home/         # Galaxy Explorer hub
 │   │   ├── characters/[id]/
 │   │   ├── films/[id]/
 │   │   ├── planets/[id]/
