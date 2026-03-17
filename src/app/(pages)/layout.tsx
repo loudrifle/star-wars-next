@@ -8,7 +8,7 @@ export default function PagesLayout({
   return (
     <>
       <Navbar />
-      <main className="pt-14 min-h-screen">{children}</main>
+      <main className="pt-18 min-h-screen">{children}</main>
     </>
   );
 }

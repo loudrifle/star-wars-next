@@ -21,11 +21,11 @@ export async function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--color-sw-border)] bg-[var(--color-sw-black)]/90 backdrop-blur-md">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link
-          href="/"
-          className="font-[var(--font-bebas)] text-xl tracking-[0.15em] text-[var(--color-sw-gold)] hover:opacity-80 transition-opacity shrink-0"
+          href="/home"
+          className="font-[var(--font-bebas)] text-2xl tracking-[0.15em] text-[var(--color-sw-gold)] hover:opacity-80 transition-opacity shrink-0"
         >
           ★ GALAXY EXPLORER
         </Link>
@@ -34,9 +34,10 @@ export async function Navbar() {
         <NavLinks links={NAV_LINKS} />
 
         <div className="flex items-center gap-3">
-          <AuthButton session={session} />
-          {/* Mobile hamburger */}
-          <MobileNav links={NAV_LINKS} />
+          <div className="hidden lg:block">
+            <AuthButton session={session} />
+          </div>
+          <MobileNav links={NAV_LINKS} session={session} />
         </div>
       </div>
     </header>

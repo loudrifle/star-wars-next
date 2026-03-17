@@ -12,7 +12,7 @@ export function NavLinks({ links }: { links: readonly NavLink[] }) {
   const pathname = usePathname();
 
   return (
-    <nav className="hidden md:flex items-center gap-5">
+    <nav className="hidden lg:flex items-center gap-5">
       {links.map(({ href, label }) => {
         const active = pathname.startsWith(href);
         return (
@@ -27,7 +27,7 @@ export function NavLinks({ links }: { links: readonly NavLink[] }) {
           >
             {label}
             {active && (
-              <span className="absolute -bottom-[18px] left-0 right-0 h-[2px] bg-[var(--color-sw-gold)] rounded-full" />
+              <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-[var(--color-sw-gold)] rounded-full" />
             )}
           </Link>
         );
