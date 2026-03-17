@@ -50,6 +50,11 @@ async function fetchAll<T>(endpoint: string): Promise<T[]> {
   return results;
 }
 
+// SWAPI name → akabab name overrides (typos / slight differences between APIs)
+const NAME_OVERRIDES: Record<string, string> = {
+  "ratts tyerel": "ratts tyerell",
+};
+
 async function fetchAkababImages(): Promise<Map<string, string>> {
   const res = await fetch(
     "https://akabab.github.io/starwars-api/api/all.json"
@@ -61,6 +66,11 @@ async function fetchAkababImages(): Promise<Map<string, string>> {
     map.set(c.name.toLowerCase().trim(), c.image);
   }
   return map;
+}
+
+function lookupImage(name: string, map: Map<string, string>): string | null {
+  const key = name.toLowerCase().trim();
+  return map.get(NAME_OVERRIDES[key] ?? key) ?? null;
 }
 
 export async function GET(req: Request) {
@@ -194,8 +204,7 @@ export async function GET(req: Request) {
 
     // ── 6. Upsert characters (with image matching) ───────────────────────────
     for (const p of rawPeople) {
-      const imageUrl =
-        imageMap.get(p.name.toLowerCase().trim()) ?? null;
+      const imageUrl = lookupImage(p.name, imageMap);
       await db
         .insert(characters)
         .values({

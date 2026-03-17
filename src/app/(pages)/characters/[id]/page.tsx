@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { isFavorited } from "@/actions/favorites";
 import { getEntityRatingStats, getUserRating } from "@/actions/ratings";
+import { CharacterImage } from "@/components/character-image";
 import { FavoriteButton } from "@/components/favorite-button";
 import { RatingWidget } from "@/components/rating-widget";
 import { StatItem } from "@/components/stat-item";
@@ -55,13 +55,7 @@ export default async function CharacterDetailPage({ params }: Props) {
         <div className="shrink-0 w-48 mx-auto md:mx-0">
           <div className="aspect-square rounded-lg overflow-hidden bg-[var(--color-sw-card)] border border-[var(--color-sw-border)]">
             {character.imageUrl ? (
-              <Image
-                src={character.imageUrl}
-                alt={character.name}
-                width={200}
-                height={200}
-                className="w-full h-full object-cover object-top"
-              />
+              <CharacterImage src={character.imageUrl} alt={character.name} />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <span

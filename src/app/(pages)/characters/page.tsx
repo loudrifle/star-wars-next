@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 
+import { CharacterImage } from "@/components/character-image";
 import { PageHeader } from "@/components/page-header";
 import { SearchBar } from "@/components/search-bar";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -40,13 +40,7 @@ export default async function CharactersPage({ searchParams }: Props) {
               {/* Image */}
               <div className="aspect-square rounded overflow-hidden bg-[var(--color-sw-dark)] border border-[var(--color-sw-border)] mb-1">
                 {character.imageUrl ? (
-                  <Image
-                    src={character.imageUrl}
-                    alt={character.name}
-                    width={200}
-                    height={200}
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                  />
+                  <CharacterImage src={character.imageUrl} alt={character.name} />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-[var(--color-sw-muted)]">
                     <span
