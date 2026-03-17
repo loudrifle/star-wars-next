@@ -29,7 +29,7 @@ export const accounts = sqliteTable(
     id_token: text("id_token"),
     session_state: text("session_state"),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.provider, t.providerAccountId] }) })
+  (t) => [primaryKey({ columns: [t.provider, t.providerAccountId] })]
 );
 
 export const sessions = sqliteTable("sessions", {
@@ -47,7 +47,7 @@ export const verificationTokens = sqliteTable(
     token: text("token").notNull(),
     expires: integer("expires", { mode: "timestamp_ms" }).notNull(),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.identifier, t.token] }) })
+  (t) => [primaryKey({ columns: [t.identifier, t.token] })]
 );
 
 // ==================== SWAPI CACHE TABLES ====================
@@ -157,7 +157,7 @@ export const filmCharacters = sqliteTable(
       .notNull()
       .references(() => characters.id, { onDelete: "cascade" }),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.filmId, t.characterId] }) })
+  (t) => [primaryKey({ columns: [t.filmId, t.characterId] })]
 );
 
 export const filmPlanets = sqliteTable(
@@ -170,7 +170,7 @@ export const filmPlanets = sqliteTable(
       .notNull()
       .references(() => planets.id, { onDelete: "cascade" }),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.filmId, t.planetId] }) })
+  (t) => [primaryKey({ columns: [t.filmId, t.planetId] })]
 );
 
 export const filmSpecies = sqliteTable(
@@ -183,7 +183,7 @@ export const filmSpecies = sqliteTable(
       .notNull()
       .references(() => species.id, { onDelete: "cascade" }),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.filmId, t.speciesId] }) })
+  (t) => [primaryKey({ columns: [t.filmId, t.speciesId] })]
 );
 
 export const filmVehicles = sqliteTable(
@@ -196,7 +196,7 @@ export const filmVehicles = sqliteTable(
       .notNull()
       .references(() => vehicles.id, { onDelete: "cascade" }),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.filmId, t.vehicleId] }) })
+  (t) => [primaryKey({ columns: [t.filmId, t.vehicleId] })]
 );
 
 export const filmStarships = sqliteTable(
@@ -209,7 +209,7 @@ export const filmStarships = sqliteTable(
       .notNull()
       .references(() => starships.id, { onDelete: "cascade" }),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.filmId, t.starshipId] }) })
+  (t) => [primaryKey({ columns: [t.filmId, t.starshipId] })]
 );
 
 export const characterSpecies = sqliteTable(
@@ -222,7 +222,7 @@ export const characterSpecies = sqliteTable(
       .notNull()
       .references(() => species.id, { onDelete: "cascade" }),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.characterId, t.speciesId] }) })
+  (t) => [primaryKey({ columns: [t.characterId, t.speciesId] })]
 );
 
 export const characterVehicles = sqliteTable(
@@ -235,7 +235,7 @@ export const characterVehicles = sqliteTable(
       .notNull()
       .references(() => vehicles.id, { onDelete: "cascade" }),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.characterId, t.vehicleId] }) })
+  (t) => [primaryKey({ columns: [t.characterId, t.vehicleId] })]
 );
 
 export const characterStarships = sqliteTable(
@@ -248,7 +248,7 @@ export const characterStarships = sqliteTable(
       .notNull()
       .references(() => starships.id, { onDelete: "cascade" }),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.characterId, t.starshipId] }) })
+  (t) => [primaryKey({ columns: [t.characterId, t.starshipId] })]
 );
 
 // ==================== USER DATA ====================
