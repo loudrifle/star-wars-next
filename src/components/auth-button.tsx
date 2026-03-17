@@ -42,7 +42,7 @@ export function AuthButton({ session }: { session: Session | null }) {
   return (
     <button
       onClick={() => void signIn("github")}
-      className="flex items-center gap-1.5 border border-[var(--color-sw-border)] text-[var(--color-sw-muted)] hover:border-[var(--color-sw-gold-dim)] hover:text-[var(--color-sw-gold)] transition-all px-3 py-1.5 rounded text-sm font-[var(--font-bebas)] tracking-wider"
+      className="flex items-center gap-1.5 border border-[var(--color-sw-border)] text-[var(--color-sw-muted)] hover:border-[var(--color-sw-gold-dim)] hover:text-[var(--color-sw-gold)] transition-all px-3 py-1.5 rounded text-sm font-[var(--font-bebas)] tracking-wider cursor-pointer"
     >
       <LogIn size={14} />
       Sign in

@@ -120,7 +120,7 @@ export function Crawl() {
 
       <div className="flex justify-center mt-12 pb-16">
         <Link
-          href="/films"
+          href="/home"
           className="group flex items-center gap-3 border border-[#ffe81f]/60 text-[#ffe81f] px-12 py-4 rounded transition-all duration-300 hover:bg-[#ffe81f]/15 hover:border-[#ffe81f] hover:shadow-[0_0_30px_rgba(255,232,31,0.25)] hover:scale-105 cursor-pointer"
           style={{
             fontFamily: "var(--font-bebas, 'Bebas Neue')",

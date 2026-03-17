@@ -1,12 +1,13 @@
-import { Menu } from "lucide-react";
 import Link from "next/link";
 
 import { auth } from "@/lib/auth";
 
 import { AuthButton } from "./auth-button";
 import { MobileNav } from "./mobile-nav";
+import { NavLinks } from "./nav-links";
 
 const NAV_LINKS = [
+  { href: "/home", label: "Home" },
   { href: "/films", label: "Films" },
   { href: "/characters", label: "Characters" },
   { href: "/planets", label: "Planets" },
@@ -30,17 +31,7 @@ export async function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-5">
-          {NAV_LINKS.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className="text-xs font-[var(--font-bebas)] tracking-[0.15em] text-[var(--color-sw-muted)] hover:text-[var(--color-sw-gold)] transition-colors"
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <NavLinks links={NAV_LINKS} />
 
         <div className="flex items-center gap-3">
           <AuthButton session={session} />
