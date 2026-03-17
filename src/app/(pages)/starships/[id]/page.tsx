@@ -37,7 +37,7 @@ export default async function StarshipDetailPage({ params }: Props) {
 
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <nav className="flex items-center gap-2 text-sm text-[var(--color-sw-muted)] mb-6">
+      <nav className="flex items-center gap-2 text-base text-[var(--color-sw-muted)] mb-6">
         <Link href="/starships" className="hover:text-[var(--color-sw-gold)] transition-colors">Starships</Link>
         <span>/</span>
         <span className="text-[var(--color-sw-text)]">{ship.name}</span>

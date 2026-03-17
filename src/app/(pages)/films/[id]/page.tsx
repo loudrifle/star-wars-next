@@ -40,7 +40,7 @@ export default async function FilmDetailPage({ params }: Props) {
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-[var(--color-sw-muted)] mb-6">
+      <nav className="flex items-center gap-2 text-base text-[var(--color-sw-muted)] mb-6">
         <Link href="/films" className="hover:text-[var(--color-sw-gold)] transition-colors">
           Films
         </Link>

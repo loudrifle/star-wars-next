@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +7,16 @@ import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/page-header";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/db";
-import { favorites, ratings } from "@/db/schema";
+import {
+  characters,
+  favorites,
+  films,
+  planets,
+  ratings,
+  species,
+  starships,
+  vehicles,
+} from "@/db/schema";
 import { auth } from "@/lib/auth";
 
 export const metadata: Metadata = { title: "Profile" };
@@ -45,6 +54,41 @@ export default async function ProfilePage() {
       .orderBy(ratings.score)
       .all(),
   ]);
+
+  // Collect entity IDs by type for batch name lookup
+  const allIds = (list: { entityType: string; entityId: number }[], type: string) =>
+    list.filter((r) => r.entityType === type).map((r) => r.entityId);
+
+  const combined = [...userFavorites, ...userRatings];
+  const charIds = allIds(combined, "character");
+  const filmIds = allIds(combined, "film");
+  const planetIds = allIds(combined, "planet");
+  const speciesIds = allIds(combined, "species");
+  const starshipIds = allIds(combined, "starship");
+  const vehicleIds = allIds(combined, "vehicle");
+
+  const [charNames, filmNames, planetNames, speciesNames, starshipNames, vehicleNames] =
+    await Promise.all([
+      charIds.length ? db.select({ id: characters.id, name: characters.name }).from(characters).where(inArray(characters.id, charIds)).all() : [],
+      filmIds.length ? db.select({ id: films.id, name: films.title }).from(films).where(inArray(films.id, filmIds)).all() : [],
+      planetIds.length ? db.select({ id: planets.id, name: planets.name }).from(planets).where(inArray(planets.id, planetIds)).all() : [],
+      speciesIds.length ? db.select({ id: species.id, name: species.name }).from(species).where(inArray(species.id, speciesIds)).all() : [],
+      starshipIds.length ? db.select({ id: starships.id, name: starships.name }).from(starships).where(inArray(starships.id, starshipIds)).all() : [],
+      vehicleIds.length ? db.select({ id: vehicles.id, name: vehicles.name }).from(vehicles).where(inArray(vehicles.id, vehicleIds)).all() : [],
+    ]);
+
+  const nameMap: Record<string, Map<number, string>> = {
+    character: new Map(charNames.map((r) => [r.id, r.name])),
+    film: new Map(filmNames.map((r) => [r.id, r.name])),
+    planet: new Map(planetNames.map((r) => [r.id, r.name])),
+    species: new Map(speciesNames.map((r) => [r.id, r.name])),
+    starship: new Map(starshipNames.map((r) => [r.id, r.name])),
+    vehicle: new Map(vehicleNames.map((r) => [r.id, r.name])),
+  };
+
+  function entityName(type: string, id: number) {
+    return nameMap[type]?.get(id) ?? `#${id}`;
+  }
 
   // Group favorites by entity type
   const favoritesByType = userFavorites.reduce<
@@ -112,7 +156,7 @@ export default async function ProfilePage() {
                   {items.map((item) => (
                     <Link key={item.id} href={`${ENTITY_PATHS[type] ?? ""}/${item.id}`}>
                       <Badge variant="gold" className="cursor-pointer">
-                        #{item.id}
+                        {entityName(type, item.id)}
                       </Badge>
                     </Link>
                   ))}
@@ -139,7 +183,7 @@ export default async function ProfilePage() {
                 className="flex items-center gap-3 p-3 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded hover:border-[var(--color-sw-gold-dim)] transition-colors"
               >
                 <Badge>{ENTITY_LABELS[r.entityType] ?? r.entityType}</Badge>
-                <span className="text-sm text-[var(--color-sw-muted)]">#{r.entityId}</span>
+                <span className="text-sm text-[var(--color-sw-text)]">{entityName(r.entityType, r.entityId)}</span>
                 <div className="ml-auto flex gap-0.5">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <span

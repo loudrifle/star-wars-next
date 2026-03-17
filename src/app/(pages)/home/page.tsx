@@ -78,7 +78,7 @@ export default function HomePage() {
       {/* Hero */}
       <div className="mb-16 text-center">
         <p
-          className="text-[var(--color-sw-muted)] tracking-[0.3em] text-sm mb-4"
+          className="text-[var(--color-sw-muted)] tracking-[0.3em] text-xl mb-4"
           style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}
         >
           WELCOME TO
@@ -111,7 +111,7 @@ export default function HomePage() {
       {/* Categories */}
       <div className="mb-16">
         <p
-          className="text-[var(--color-sw-muted)] tracking-[0.25em] text-sm mb-6"
+          className="text-[var(--color-sw-muted)] tracking-[0.25em] text-xl mb-6"
           style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}
         >
           EXPLORE THE UNIVERSE
@@ -148,7 +148,7 @@ export default function HomePage() {
       {/* Features */}
       <div>
         <p
-          className="text-[var(--color-sw-muted)] tracking-[0.25em] text-sm mb-6"
+          className="text-[var(--color-sw-muted)] tracking-[0.25em] text-xl mb-6"
           style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}
         >
           FEATURES

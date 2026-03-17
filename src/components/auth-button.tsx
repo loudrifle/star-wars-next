@@ -29,7 +29,7 @@ export function AuthButton({ session }: { session: Session | null }) {
         </Link>
         <button
           onClick={() => void signOut()}
-          className="flex items-center gap-1 text-xs text-[var(--color-sw-muted)] hover:text-[var(--color-sw-red)] transition-colors"
+          className="flex items-center gap-1 text-xs text-[var(--color-sw-muted)] hover:text-[var(--color-sw-red)] transition-colors cursor-pointer"
           title="Sign out"
         >
           <LogOut size={14} />
