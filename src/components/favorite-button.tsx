@@ -22,10 +22,6 @@ export function FavoriteButton({
 }: FavoriteButtonProps) {
   const { data: session } = useSession();
   const [isPending, startTransition] = useTransition();
-  const [favorited, setFavorited] = [
-    initialFavorited,
-    // optimistic update handled inline
-  ];
 
   function handleClick() {
     if (!session) {
