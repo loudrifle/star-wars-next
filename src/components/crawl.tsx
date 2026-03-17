@@ -24,23 +24,23 @@ export function Crawl() {
             style={{
               fontFamily: "var(--font-bebas, 'Bebas Neue')",
               color: "#ffe81f",
-              letterSpacing: "0.3em",
-              fontSize: "0.75rem",
+              letterSpacing: "0.35em",
+              fontSize: "1.5rem",
             }}
           >
             A long time ago in a galaxy far, far away....
           </p>
           <button
             onClick={() => setStarted(true)}
-            className="flex items-center gap-2 border border-[#ffe81f]/40 text-[#ffe81f] px-8 py-3 hover:bg-[#ffe81f]/10 transition-all rounded"
+            className="group flex items-center gap-3 border border-[#ffe81f]/50 text-[#ffe81f] px-12 py-4 rounded transition-all duration-300 hover:bg-[#ffe81f]/15 hover:border-[#ffe81f] hover:shadow-[0_0_30px_rgba(255,232,31,0.25)] hover:scale-105 hover:cursor-pointer active:scale-95"
             style={{
               fontFamily: "var(--font-bebas, 'Bebas Neue')",
-              letterSpacing: "0.3em",
-              fontSize: "1rem",
+              letterSpacing: "0.4em",
+              fontSize: "1.4rem",
             }}
           >
             BEGIN
-            <ChevronRight size={16} />
+            <ChevronRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />
           </button>
         </div>
       </div>
@@ -59,8 +59,8 @@ export function Crawl() {
             style={{
               fontFamily: "var(--font-bebas, 'Bebas Neue')",
               color: "#ffe81f",
-              letterSpacing: "0.25em",
-              fontSize: "1rem",
+              letterSpacing: "0.35em",
+              fontSize: "1.6rem",
             }}
           >
             GALAXY EXPLORER
@@ -73,7 +73,7 @@ export function Crawl() {
               fontFamily: "var(--font-bebas, 'Bebas Neue')",
               color: "#ffe81f",
               letterSpacing: "0.15em",
-              fontSize: "3.5rem",
+              fontSize: "6rem",
               lineHeight: 1,
             }}
           >
@@ -94,13 +94,13 @@ export function Crawl() {
           {CRAWL_TEXT.map((para, i) => (
             <p
               key={i}
-              className="mb-5 text-center"
+              className="mb-6 text-center"
               style={{
                 fontFamily: "var(--font-bebas, 'Bebas Neue')",
                 color: "#ffe81f",
-                fontSize: "1.05rem",
+                fontSize: "1.85rem",
                 letterSpacing: "0.08em",
-                lineHeight: 1.7,
+                lineHeight: 1.8,
               }}
             >
               {para}
@@ -108,18 +108,18 @@ export function Crawl() {
           ))}
 
           {/* CTA */}
-          <div className="flex justify-center mt-10">
+          <div className="flex justify-center mt-12">
             <Link
               href="/films"
-              className="flex items-center gap-2 border border-[#ffe81f]/60 text-[#ffe81f] px-8 py-3 hover:bg-[#ffe81f]/10 transition-all rounded"
+              className="group flex items-center gap-3 border border-[#ffe81f]/60 text-[#ffe81f] px-12 py-4 rounded transition-all duration-300 hover:bg-[#ffe81f]/15 hover:border-[#ffe81f] hover:shadow-[0_0_30px_rgba(255,232,31,0.25)] hover:scale-105"
               style={{
                 fontFamily: "var(--font-bebas, 'Bebas Neue')",
-                letterSpacing: "0.3em",
-                fontSize: "1rem",
+                letterSpacing: "0.4em",
+                fontSize: "1.4rem",
               }}
             >
               ENTER THE GALAXY
-              <ChevronRight size={16} />
+              <ChevronRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>

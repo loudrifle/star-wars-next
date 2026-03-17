@@ -116,16 +116,16 @@ body::after {
   left: 50%;
   width: min(600px, 85vw);
   transform-origin: 50% 100%;
-  animation: crawlRoll 90s linear forwards;
+  animation: crawlRoll 60s linear forwards;
   padding-bottom: 10vh;
 }
 
 @keyframes crawlRoll {
   from {
-    transform: translateX(-50%) perspective(400px) rotateX(22deg) translateY(100vh);
+    transform: translateX(-50%) perspective(400px) rotateX(15deg) translateY(80vh);
   }
   to {
-    transform: translateX(-50%) perspective(400px) rotateX(22deg) translateY(-350%);
+    transform: translateX(-50%) perspective(400px) rotateX(15deg) translateY(-350%);
   }
 }
 
