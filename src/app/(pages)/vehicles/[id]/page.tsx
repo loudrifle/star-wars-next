@@ -37,23 +37,23 @@ export default async function VehicleDetailPage({ params }: Props) {
 
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <nav className="flex items-center gap-2 text-xs text-[var(--color-sw-muted)] mb-6">
+      <nav className="flex items-center gap-2 text-sm text-[var(--color-sw-muted)] mb-6">
         <Link href="/vehicles" className="hover:text-[var(--color-sw-gold)] transition-colors">Vehicles</Link>
         <span>/</span>
         <span className="text-[var(--color-sw-text)]">{vehicle.name}</span>
       </nav>
 
-      <h1 className="text-[var(--color-sw-gold)] mb-1 leading-none" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", fontSize: "3.5rem", letterSpacing: "0.08em" }}>
+      <h1 className="text-[var(--color-sw-gold)] mb-1 leading-none" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", fontSize: "4.5rem", letterSpacing: "0.08em" }}>
         {vehicle.name}
       </h1>
-      <p className="text-[var(--color-sw-muted)] italic text-sm mb-4">{vehicle.model}</p>
+      <p className="text-[var(--color-sw-muted)] italic text-base mb-4">{vehicle.model}</p>
 
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <FavoriteButton entityType="vehicle" entityId={vehicleId} initialFavorited={favorited} />
         <RatingWidget entityType="vehicle" entityId={vehicleId} initialScore={userRating?.score ?? null} average={ratingStats.average} count={ratingStats.count} />
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-6 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded mb-8">
         <StatItem label="Manufacturer" value={vehicle.manufacturer} />
         <StatItem label="Class" value={vehicle.vehicleClass} />
         <StatItem label="Length" value={vehicle.length !== "unknown" ? `${vehicle.length} m` : "unknown"} />
@@ -67,7 +67,7 @@ export default async function VehicleDetailPage({ params }: Props) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {vehicle.pilots.length > 0 && (
-          <section className="p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
+          <section className="p-6 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
             <SectionTitle>Known Pilots</SectionTitle>
             <div className="flex flex-wrap gap-2">
               {vehicle.pilots.map((c) => (
@@ -79,12 +79,12 @@ export default async function VehicleDetailPage({ params }: Props) {
           </section>
         )}
         {vehicle.films.length > 0 && (
-          <section className="p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
+          <section className="p-6 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
             <SectionTitle>Films</SectionTitle>
             <div className="flex flex-col gap-1.5">
               {vehicle.films.map((f) => (
-                <Link key={f.id} href={`/films/${f.id}`} className="flex items-center gap-2 text-sm text-[var(--color-sw-muted)] hover:text-[var(--color-sw-gold)] transition-colors">
-                  <span className="text-[var(--color-sw-border)] font-mono text-xs">{toRoman(f.episodeId)}</span>
+                <Link key={f.id} href={`/films/${f.id}`} className="flex items-center gap-2 text-base text-[var(--color-sw-muted)] hover:text-[var(--color-sw-gold)] transition-colors">
+                  <span className="text-[var(--color-sw-gold-dim)] font-mono text-sm">{toRoman(f.episodeId)}</span>
                   {f.title}
                 </Link>
               ))}
@@ -98,7 +98,7 @@ export default async function VehicleDetailPage({ params }: Props) {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="text-[var(--color-sw-gold-dim)] mb-3" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", letterSpacing: "0.15em", fontSize: "0.85rem" }}>
+    <h3 className="text-[var(--color-sw-gold-dim)] mb-3" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", letterSpacing: "0.15em", fontSize: "1.1rem" }}>
       {children}
     </h3>
   );

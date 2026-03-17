@@ -21,14 +21,17 @@ export default async function SpeciesPage({ searchParams }: Props) {
       <div className="mb-6">
         <Suspense><SearchBar placeholder="Search species..." /></Suspense>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         {allSpecies.map((s) => (
           <Link key={s.id} href={`/species/${s.id}`}>
-            <article className="entity-card p-4 h-full flex flex-col gap-2 cursor-pointer group">
-              <h2 className="text-[var(--color-sw-gold)] group-hover:text-[var(--color-sw-gold-dim)] transition-colors" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", fontSize: "1.4rem", letterSpacing: "0.08em" }}>
+            <article className="entity-card p-5 h-full flex flex-col gap-3 cursor-pointer group">
+              <h2
+                className="text-[var(--color-sw-gold)] group-hover:text-[var(--color-sw-gold-dim)] transition-colors"
+                style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", fontSize: "1.7rem", letterSpacing: "0.08em" }}
+              >
                 {s.name}
               </h2>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-1">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-1">
                 <Stat label="Classification" value={fmt(s.classification)} />
                 <Stat label="Designation" value={fmt(s.designation)} />
                 <Stat label="Avg. Lifespan" value={fmt(s.averageLifespan)} />
@@ -48,8 +51,8 @@ export default async function SpeciesPage({ searchParams }: Props) {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-[9px] text-[var(--color-sw-muted)] uppercase tracking-widest" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}>{label}</p>
-      <p className="text-xs text-[var(--color-sw-text)] truncate">{value}</p>
+      <p className="text-xs text-[var(--color-sw-muted)] uppercase tracking-widest" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}>{label}</p>
+      <p className="text-sm text-[var(--color-sw-text)] truncate">{value}</p>
     </div>
   );
 }

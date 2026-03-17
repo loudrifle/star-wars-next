@@ -41,7 +41,7 @@ export default async function CharacterDetailPage({ params }: Props) {
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs text-[var(--color-sw-muted)] mb-6">
+      <nav className="flex items-center gap-2 text-sm text-[var(--color-sw-muted)] mb-6">
         <Link href="/characters" className="hover:text-[var(--color-sw-gold)] transition-colors">
           Characters
         </Link>
@@ -52,8 +52,8 @@ export default async function CharacterDetailPage({ params }: Props) {
       {/* Hero */}
       <div className="flex flex-col md:flex-row gap-8 mb-10">
         {/* Portrait */}
-        <div className="shrink-0 w-48 mx-auto md:mx-0">
-          <div className="aspect-square rounded-lg overflow-hidden bg-[var(--color-sw-card)] border border-[var(--color-sw-border)]">
+        <div className="shrink-0 w-64 mx-auto md:mx-0 self-stretch">
+          <div className="h-full min-h-[16rem] rounded-lg overflow-hidden bg-[var(--color-sw-card)] border border-[var(--color-sw-border)]">
             {character.imageUrl ? (
               <CharacterImage src={character.imageUrl} alt={character.name} />
             ) : (
@@ -72,7 +72,7 @@ export default async function CharacterDetailPage({ params }: Props) {
         <div className="flex-1">
           <h1
             className="text-[var(--color-sw-gold)] mb-4 leading-none"
-            style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", fontSize: "3.5rem", letterSpacing: "0.08em" }}
+            style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", fontSize: "4.5rem", letterSpacing: "0.08em" }}
           >
             {character.name}
           </h1>
@@ -88,7 +88,7 @@ export default async function CharacterDetailPage({ params }: Props) {
             />
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-6 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
             <StatItem label="Birth Year" value={character.birthYear} />
             <StatItem label="Gender" value={character.gender} />
             <StatItem label="Height" value={character.height !== "unknown" ? `${character.height} cm` : "unknown"} />
@@ -103,7 +103,7 @@ export default async function CharacterDetailPage({ params }: Props) {
                 </span>
                 <Link
                   href={`/planets/${character.homeworld.id}`}
-                  className="text-sm text-[var(--color-sw-blue)] hover:text-[var(--color-sw-gold)] transition-colors"
+                  className="text-sm text-[var(--color-sw-gold-dim)] hover:text-[var(--color-sw-gold)] transition-colors"
                 >
                   {character.homeworld.name}
                 </Link>
@@ -116,12 +116,12 @@ export default async function CharacterDetailPage({ params }: Props) {
       {/* Related sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {character.films.length > 0 && (
-          <section className="p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
+          <section className="p-6 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
             <SectionTitle>Films</SectionTitle>
             <div className="flex flex-col gap-1.5">
               {character.films.map((film) => (
-                <Link key={film.id} href={`/films/${film.id}`} className="flex items-center gap-2 text-sm text-[var(--color-sw-muted)] hover:text-[var(--color-sw-gold)] transition-colors">
-                  <span className="text-[var(--color-sw-border)] font-mono text-xs">
+                <Link key={film.id} href={`/films/${film.id}`} className="flex items-center gap-2 text-base text-[var(--color-sw-muted)] hover:text-[var(--color-sw-gold)] transition-colors">
+                  <span className="text-[var(--color-sw-gold-dim)] font-mono text-sm">
                     {toRoman(film.episodeId)}
                   </span>
                   {film.title}
@@ -132,7 +132,7 @@ export default async function CharacterDetailPage({ params }: Props) {
         )}
 
         {character.species.length > 0 && (
-          <section className="p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
+          <section className="p-6 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
             <SectionTitle>Species</SectionTitle>
             <div className="flex flex-wrap gap-2">
               {character.species.map((s) => (
@@ -145,7 +145,7 @@ export default async function CharacterDetailPage({ params }: Props) {
         )}
 
         {character.starships.length > 0 && (
-          <section className="p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
+          <section className="p-6 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
             <SectionTitle>Starships</SectionTitle>
             <div className="flex flex-wrap gap-2">
               {character.starships.map((s) => (
@@ -158,7 +158,7 @@ export default async function CharacterDetailPage({ params }: Props) {
         )}
 
         {character.vehicles.length > 0 && (
-          <section className="p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
+          <section className="p-6 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
             <SectionTitle>Vehicles</SectionTitle>
             <div className="flex flex-wrap gap-2">
               {character.vehicles.map((v) => (
@@ -178,7 +178,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <h3
       className="text-[var(--color-sw-gold-dim)] mb-3"
-      style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", letterSpacing: "0.15em", fontSize: "0.85rem" }}
+      style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", letterSpacing: "0.15em", fontSize: "1.1rem" }}
     >
       {children}
     </h3>

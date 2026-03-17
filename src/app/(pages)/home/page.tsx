@@ -78,7 +78,7 @@ export default function HomePage() {
       {/* Hero */}
       <div className="mb-16 text-center">
         <p
-          className="text-[var(--color-sw-muted)] tracking-[0.3em] text-xs mb-4"
+          className="text-[var(--color-sw-muted)] tracking-[0.3em] text-sm mb-4"
           style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}
         >
           WELCOME TO
@@ -87,7 +87,7 @@ export default function HomePage() {
           className="text-[var(--color-sw-gold)] mb-6"
           style={{
             fontFamily: "var(--font-bebas, 'Bebas Neue')",
-            fontSize: "clamp(3rem, 8vw, 5.5rem)",
+            fontSize: "clamp(4rem, 10vw, 7rem)",
             letterSpacing: "0.1em",
             lineHeight: 1,
           }}
@@ -101,7 +101,7 @@ export default function HomePage() {
             marginBottom: "1.5rem",
           }}
         />
-        <p className="text-[var(--color-sw-text)] text-base max-w-xl mx-auto leading-relaxed opacity-80">
+        <p className="text-[var(--color-sw-text)] text-lg max-w-2xl mx-auto leading-relaxed opacity-80">
           A complete encyclopaedia of the Star Wars universe. Browse every film,
           character, planet, species, starship and vehicle from the saga —
           all interconnected and searchable.
@@ -111,32 +111,32 @@ export default function HomePage() {
       {/* Categories */}
       <div className="mb-16">
         <p
-          className="text-[var(--color-sw-muted)] tracking-[0.25em] text-xs mb-6"
+          className="text-[var(--color-sw-muted)] tracking-[0.25em] text-sm mb-6"
           style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}
         >
           EXPLORE THE UNIVERSE
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {SECTIONS.map(({ href, icon: Icon, label, description }) => (
             <Link key={href} href={href}>
-              <article className="entity-card p-5 h-full flex flex-col gap-3 cursor-pointer group">
+              <article className="entity-card p-7 h-full flex flex-col gap-4 cursor-pointer group">
                 <div className="flex items-center gap-3">
                   <Icon
-                    size={18}
+                    size={22}
                     className="text-[var(--color-sw-gold-dim)] group-hover:text-[var(--color-sw-gold)] transition-colors shrink-0"
                   />
                   <h2
                     className="text-[var(--color-sw-gold)] group-hover:text-[var(--color-sw-gold-dim)] transition-colors"
                     style={{
                       fontFamily: "var(--font-bebas, 'Bebas Neue')",
-                      fontSize: "1.4rem",
+                      fontSize: "1.8rem",
                       letterSpacing: "0.1em",
                     }}
                   >
                     {label}
                   </h2>
                 </div>
-                <p className="text-[var(--color-sw-muted)] text-sm leading-relaxed">
+                <p className="text-[var(--color-sw-muted)] text-base leading-relaxed">
                   {description}
                 </p>
               </article>
@@ -148,21 +148,21 @@ export default function HomePage() {
       {/* Features */}
       <div>
         <p
-          className="text-[var(--color-sw-muted)] tracking-[0.25em] text-xs mb-6"
+          className="text-[var(--color-sw-muted)] tracking-[0.25em] text-sm mb-6"
           style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}
         >
           FEATURES
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {FEATURES.map(({ icon: Icon, label, description }) => (
             <div
               key={label}
-              className="border border-[var(--color-sw-border)] rounded-lg p-5 flex flex-col gap-2"
+              className="border border-[var(--color-sw-border)] rounded-lg p-6 flex flex-col gap-3"
             >
-              <div className="flex items-center gap-2">
-                <Icon size={16} className="text-[var(--color-sw-gold-dim)]" />
+              <div className="flex items-center gap-3">
+                <Icon size={20} className="text-[var(--color-sw-gold-dim)]" />
                 <span
-                  className="text-[var(--color-sw-text)] text-sm"
+                  className="text-[var(--color-sw-text)] text-base"
                   style={{
                     fontFamily: "var(--font-bebas, 'Bebas Neue')",
                     letterSpacing: "0.1em",
@@ -171,7 +171,7 @@ export default function HomePage() {
                   {label}
                 </span>
               </div>
-              <p className="text-[var(--color-sw-muted)] text-xs leading-relaxed">
+              <p className="text-[var(--color-sw-muted)] text-sm leading-relaxed">
                 {description}
               </p>
             </div>

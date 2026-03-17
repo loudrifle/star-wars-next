@@ -54,14 +54,14 @@ export default async function CharactersPage({ searchParams }: Props) {
 
               {/* Name */}
               <h2
-                className="text-[var(--color-sw-text)] text-sm leading-tight group-hover:text-[var(--color-sw-gold)] transition-colors"
+                className="text-[var(--color-sw-text)] text-base leading-tight group-hover:text-[var(--color-sw-gold)] transition-colors"
                 style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", letterSpacing: "0.05em" }}
               >
                 {character.name}
               </h2>
 
               {/* Birth year */}
-              <p className="text-[10px] text-[var(--color-sw-muted)] mt-auto">
+              <p className="text-xs text-[var(--color-sw-muted)] mt-auto">
                 {fmt(character.birthYear)}
               </p>
             </article>

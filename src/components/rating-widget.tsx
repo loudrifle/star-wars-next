@@ -57,8 +57,8 @@ export function RatingWidget({
     <div className="flex flex-col gap-2">
       {/* Community average */}
       {count > 0 && (
-        <div className="flex items-center gap-1.5 text-xs text-[var(--color-sw-muted)]">
-          <Star size={11} className="fill-[var(--color-sw-gold-dim)] text-[var(--color-sw-gold-dim)]" />
+        <div className="flex items-center gap-1.5 text-sm text-[var(--color-sw-muted)]">
+          <Star size={13} className="fill-[var(--color-sw-gold-dim)] text-[var(--color-sw-gold-dim)]" />
           <span>
             {average?.toFixed(1)} <span className="opacity-60">({count} {count === 1 ? "rating" : "ratings"})</span>
           </span>
@@ -81,7 +81,7 @@ export function RatingWidget({
             title={`Rate ${star}/5`}
           >
             <Star
-              size={16}
+              size={20}
               className={cn(
                 "transition-colors",
                 displayScore >= star
@@ -92,7 +92,7 @@ export function RatingWidget({
           </button>
         ))}
         {currentScore && (
-          <span className="ml-1 text-[10px] text-[var(--color-sw-muted)] font-[var(--font-bebas)] tracking-wider">
+          <span className="ml-1 text-xs text-[var(--color-sw-muted)] font-[var(--font-bebas)] tracking-wider">
             Your rating: {currentScore}/5
           </span>
         )}

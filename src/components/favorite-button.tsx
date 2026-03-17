@@ -44,11 +44,11 @@ export function FavoriteButton({
       onClick={handleClick}
       disabled={isPending}
       className={cn(
-        "flex items-center gap-1.5 px-3 py-1.5 rounded border text-xs font-[var(--font-bebas)] tracking-wider transition-all",
+        "flex items-center gap-2 px-4 py-2 rounded border text-sm font-[var(--font-bebas)] tracking-wider transition-all",
         initialFavorited
           ? "border-[var(--color-sw-red)]/60 text-[var(--color-sw-red)] bg-[var(--color-sw-red)]/10 hover:bg-[var(--color-sw-red)]/20"
           : "border-[var(--color-sw-border)] text-[var(--color-sw-muted)] hover:border-[var(--color-sw-red)]/60 hover:text-[var(--color-sw-red)]",
-        isPending && "opacity-50 cursor-not-allowed"
+        isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
       )}
       title={initialFavorited ? "Remove from favorites" : "Add to favorites"}
     >

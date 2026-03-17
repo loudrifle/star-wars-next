@@ -40,7 +40,7 @@ export default async function FilmDetailPage({ params }: Props) {
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs text-[var(--color-sw-muted)] mb-6">
+      <nav className="flex items-center gap-2 text-sm text-[var(--color-sw-muted)] mb-6">
         <Link href="/films" className="hover:text-[var(--color-sw-gold)] transition-colors">
           Films
         </Link>
@@ -52,13 +52,13 @@ export default async function FilmDetailPage({ params }: Props) {
       <div className="mb-8">
         <p
           className="text-[var(--color-sw-muted)] mb-2"
-          style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", letterSpacing: "0.25em", fontSize: "0.8rem" }}
+          style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", letterSpacing: "0.25em", fontSize: "1.1rem" }}
         >
           EPISODE {toRoman(film.episodeId)}
         </p>
         <h1
           className="text-[var(--color-sw-gold)] mb-4 leading-none"
-          style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", fontSize: "4rem", letterSpacing: "0.08em" }}
+          style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", fontSize: "5rem", letterSpacing: "0.08em" }}
         >
           {film.title}
         </h1>
@@ -74,7 +74,7 @@ export default async function FilmDetailPage({ params }: Props) {
           />
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
           <StatItem label="Director" value={film.director} raw />
           <StatItem label="Producer" value={film.producer} raw />
           <StatItem label="Release Date" value={film.releaseDate} raw />
@@ -90,7 +90,7 @@ export default async function FilmDetailPage({ params }: Props) {
         >
           OPENING CRAWL
         </h2>
-        <p className="text-[var(--color-sw-muted)] text-sm leading-relaxed whitespace-pre-wrap">
+        <p className="text-[var(--color-sw-muted)] text-base leading-relaxed whitespace-pre-wrap">
           {film.openingCrawl}
         </p>
       </section>
@@ -118,10 +118,10 @@ function RelatedSection({
 }) {
   if (!items.length) return null;
   return (
-    <section className="p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
+    <section className="p-6 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
       <h3
         className="text-[var(--color-sw-gold-dim)] mb-3"
-        style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", letterSpacing: "0.15em", fontSize: "0.9rem" }}
+        style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", letterSpacing: "0.15em", fontSize: "1.1rem" }}
       >
         {title} ({items.length})
       </h3>

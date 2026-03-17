@@ -18,13 +18,13 @@ export default async function FilmsPage() {
         count={allFilms.length}
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {allFilms.map((film) => (
           <Link key={film.id} href={`/films/${film.id}`}>
-            <article className="entity-card p-5 h-full flex flex-col gap-3 cursor-pointer group">
+            <article className="entity-card p-7 h-full flex flex-col gap-4 cursor-pointer group">
               {/* Episode */}
               <p
-                className="text-[var(--color-sw-muted)] text-xs tracking-[0.2em]"
+                className="text-[var(--color-sw-muted)] text-sm tracking-[0.2em]"
                 style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}
               >
                 EPISODE {toRoman(film.episodeId)}
@@ -35,7 +35,7 @@ export default async function FilmsPage() {
                 className="text-[var(--color-sw-gold)] leading-tight group-hover:text-[var(--color-sw-gold-dim)] transition-colors"
                 style={{
                   fontFamily: "var(--font-bebas, 'Bebas Neue')",
-                  fontSize: "2rem",
+                  fontSize: "2.5rem",
                   letterSpacing: "0.08em",
                 }}
               >
@@ -43,7 +43,7 @@ export default async function FilmsPage() {
               </h2>
 
               {/* Meta */}
-              <div className="flex items-center gap-4 text-xs text-[var(--color-sw-muted)] mt-auto pt-3 border-t border-[var(--color-sw-border)]">
+              <div className="flex items-center gap-4 text-sm text-[var(--color-sw-muted)] mt-auto pt-4 border-t border-[var(--color-sw-border)]">
                 <span>{film.director}</span>
                 <span className="ml-auto">{film.releaseDate.slice(0, 4)}</span>
               </div>

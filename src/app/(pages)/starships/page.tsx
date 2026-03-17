@@ -21,15 +21,18 @@ export default async function StarshipsPage({ searchParams }: Props) {
       <div className="mb-6">
         <Suspense><SearchBar placeholder="Search starships..." /></Suspense>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         {allStarships.map((ship) => (
           <Link key={ship.id} href={`/starships/${ship.id}`}>
-            <article className="entity-card p-4 h-full flex flex-col gap-2 cursor-pointer group">
-              <h2 className="text-[var(--color-sw-gold)] group-hover:text-[var(--color-sw-gold-dim)] transition-colors" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", fontSize: "1.3rem", letterSpacing: "0.08em" }}>
+            <article className="entity-card p-5 h-full flex flex-col gap-3 cursor-pointer group">
+              <h2
+                className="text-[var(--color-sw-gold)] group-hover:text-[var(--color-sw-gold-dim)] transition-colors"
+                style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')", fontSize: "1.6rem", letterSpacing: "0.08em" }}
+              >
                 {ship.name}
               </h2>
-              <p className="text-xs text-[var(--color-sw-muted)] italic">{ship.model}</p>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-auto pt-2 border-t border-[var(--color-sw-border)]">
+              <p className="text-sm text-[var(--color-sw-muted)] italic">{ship.model}</p>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-auto pt-3 border-t border-[var(--color-sw-border)]">
                 <Stat label="Class" value={fmt(ship.starshipClass)} />
                 <Stat label="Hyperdrive" value={fmt(ship.hyperdriveRating)} />
                 <Stat label="Crew" value={fmt(ship.crew)} />
@@ -49,8 +52,8 @@ export default async function StarshipsPage({ searchParams }: Props) {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-[9px] text-[var(--color-sw-muted)] uppercase tracking-widest" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}>{label}</p>
-      <p className="text-xs text-[var(--color-sw-text)] truncate">{value}</p>
+      <p className="text-xs text-[var(--color-sw-muted)] uppercase tracking-widest" style={{ fontFamily: "var(--font-bebas, 'Bebas Neue')" }}>{label}</p>
+      <p className="text-sm text-[var(--color-sw-text)] truncate">{value}</p>
     </div>
   );
 }
