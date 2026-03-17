@@ -16,7 +16,7 @@ export default async function SpeciesPage({ searchParams }: Props) {
   const allSpecies = await getAllSpecies(q);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <PageHeader title="Species" subtitle="Lifeforms across the galaxy" count={allSpecies.length} />
       <div className="mb-6">
         <Suspense><SearchBar placeholder="Search species..." /></Suspense>

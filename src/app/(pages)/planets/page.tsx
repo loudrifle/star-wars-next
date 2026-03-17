@@ -18,7 +18,7 @@ export default async function PlanetsPage({ searchParams }: Props) {
   const allPlanets = await getAllPlanets(q);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <PageHeader title="Planets" subtitle="Worlds of the Star Wars galaxy" count={allPlanets.length} />
       <div className="mb-6">
         <Suspense><SearchBar placeholder="Search planets..." /></Suspense>

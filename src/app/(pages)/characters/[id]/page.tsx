@@ -39,7 +39,7 @@ export default async function CharacterDetailPage({ params }: Props) {
   ]);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-xs text-[var(--color-sw-muted)] mb-6">
         <Link href="/characters" className="hover:text-[var(--color-sw-gold)] transition-colors">

@@ -20,7 +20,7 @@ export default async function CharactersPage({ searchParams }: Props) {
   const allCharacters = await getAllCharacters(q);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <PageHeader
         title="Characters"
         subtitle="Every person in the Star Wars saga"

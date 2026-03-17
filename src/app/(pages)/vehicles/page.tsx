@@ -16,7 +16,7 @@ export default async function VehiclesPage({ searchParams }: Props) {
   const allVehicles = await getAllVehicles(q);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <PageHeader title="Vehicles" subtitle="Ground and atmospheric craft of the saga" count={allVehicles.length} />
       <div className="mb-6">
         <Suspense><SearchBar placeholder="Search vehicles..." /></Suspense>
