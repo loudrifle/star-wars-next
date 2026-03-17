@@ -1,10 +1,10 @@
 "use client";
 
 import { LogIn, LogOut, User } from "lucide-react";
-import type { Session } from "next-auth";
-import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import type { Session } from "next-auth";
+import { signIn, signOut } from "next-auth/react";
 
 export function AuthButton({ session }: { session: Session | null }) {
   if (session?.user) {

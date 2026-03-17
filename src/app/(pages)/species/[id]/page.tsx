@@ -27,7 +27,7 @@ export default async function SpeciesDetailPage({ params }: Props) {
   if (!spec) notFound();
 
   const session = await auth();
-  const userId = session?.user?.id;
+  const userId = session?.user.id;
 
   const [favorited, ratingStats, userRating] = await Promise.all([
     userId ? isFavorited(userId, "species", speciesId) : false,

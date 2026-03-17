@@ -1,4 +1,4 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue,clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 /** Extracts the numeric ID from a SWAPI URL like https://swapi.dev/api/people/1/ */
 export function extractSwapiId(url: string): number {
-  const match = url.match(/\/(\d+)\/$/);
+  const match = /\/(\d+)\/$/.exec(url);
   return match ? parseInt(match[1], 10) : 0;
 }
 

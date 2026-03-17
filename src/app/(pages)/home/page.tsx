@@ -1,16 +1,16 @@
+import {
+  Car,
+  Clapperboard,
+  Dna,
+  Globe,
+  Heart,
+  Rocket,
+  Search,
+  Star,
+  Users,
+} from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  Clapperboard,
-  Users,
-  Globe,
-  Dna,
-  Rocket,
-  Car,
-  Star,
-  Heart,
-  Search,
-} from "lucide-react";
 
 export const metadata: Metadata = { title: "Home — Galaxy Explorer" };
 

@@ -2,16 +2,16 @@ import { asc, eq, like } from "drizzle-orm";
 
 import { db } from "@/db";
 import {
+  characters,
   characterSpecies,
   characterStarships,
   characterVehicles,
-  characters,
   filmCharacters,
   filmPlanets,
+  films,
   filmSpecies,
   filmStarships,
   filmVehicles,
-  films,
   planets,
   species,
   starships,

@@ -17,7 +17,7 @@ export async function upsertRating(
   if (score < 1 || score > 5) throw new Error("Score must be between 1 and 5");
 
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Not authenticated");
+  if (!session?.user.id) throw new Error("Not authenticated");
 
   const userId = session.user.id;
   const now = new Date();
@@ -53,7 +53,7 @@ export async function deleteRating(
   entityId: number
 ) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Not authenticated");
+  if (!session?.user.id) throw new Error("Not authenticated");
 
   await db
     .delete(ratings)
@@ -87,7 +87,7 @@ export async function getEntityRatingStats(
     .get();
 
   return {
-    average: result?.avg ? parseFloat(String(result.avg)) : null,
+    average: result?.avg ? parseFloat(result.avg) : null,
     count: result?.count ?? 0,
   };
 }

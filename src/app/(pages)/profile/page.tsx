@@ -41,7 +41,7 @@ const ENTITY_PATHS: Record<string, string> = {
 
 export default async function ProfilePage() {
   const session = await auth();
-  if (!session?.user?.id) redirect("/");
+  if (!session?.user.id) redirect("/");
 
   const userId = session.user.id;
 
@@ -77,27 +77,24 @@ export default async function ProfilePage() {
       vehicleIds.length ? db.select({ id: vehicles.id, name: vehicles.name }).from(vehicles).where(inArray(vehicles.id, vehicleIds)).all() : [],
     ]);
 
-  const nameMap: Record<string, Map<number, string>> = {
-    character: new Map(charNames.map((r) => [r.id, r.name])),
-    film: new Map(filmNames.map((r) => [r.id, r.name])),
-    planet: new Map(planetNames.map((r) => [r.id, r.name])),
-    species: new Map(speciesNames.map((r) => [r.id, r.name])),
-    starship: new Map(starshipNames.map((r) => [r.id, r.name])),
-    vehicle: new Map(vehicleNames.map((r) => [r.id, r.name])),
-  };
+  const nameMap = new Map<string, Map<number, string>>([
+    ["character", new Map(charNames.map((r) => [r.id, r.name]))],
+    ["film", new Map(filmNames.map((r) => [r.id, r.name]))],
+    ["planet", new Map(planetNames.map((r) => [r.id, r.name]))],
+    ["species", new Map(speciesNames.map((r) => [r.id, r.name]))],
+    ["starship", new Map(starshipNames.map((r) => [r.id, r.name]))],
+    ["vehicle", new Map(vehicleNames.map((r) => [r.id, r.name]))],
+  ]);
 
   function entityName(type: string, id: number) {
-    return nameMap[type]?.get(id) ?? `#${id}`;
+    return nameMap.get(type)?.get(id) ?? `#${id}`;
   }
 
   // Group favorites by entity type
-  const favoritesByType = userFavorites.reduce<
-    Record<string, { id: number }[]>
-  >((acc, fav) => {
-    if (!acc[fav.entityType]) acc[fav.entityType] = [];
-    acc[fav.entityType].push({ id: fav.entityId });
-    return acc;
-  }, {});
+  const favoritesByType: Partial<Record<string, { id: number }[]>> = {};
+  for (const fav of userFavorites) {
+    (favoritesByType[fav.entityType] ??= []).push({ id: fav.entityId });
+  }
 
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -144,7 +141,7 @@ export default async function ProfilePage() {
           </p>
         ) : (
           <div className="space-y-4">
-            {Object.entries(favoritesByType).map(([type, items]) => (
+            {(Object.entries(favoritesByType) as [string, { id: number }[]][]).map(([type, items]) => (
               <div key={type} className="p-4 bg-[var(--color-sw-card)] border border-[var(--color-sw-border)] rounded">
                 <h3
                   className="text-[var(--color-sw-gold-dim)] mb-3"

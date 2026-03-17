@@ -10,7 +10,7 @@ import type { EntityType } from "@/types";
 
 export async function toggleFavorite(entityType: EntityType, entityId: number) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Not authenticated");
+  if (!session?.user.id) throw new Error("Not authenticated");
 
   const userId = session.user.id;
 

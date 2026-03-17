@@ -27,7 +27,7 @@ export default async function StarshipDetailPage({ params }: Props) {
   if (!ship) notFound();
 
   const session = await auth();
-  const userId = session?.user?.id;
+  const userId = session?.user.id;
 
   const [favorited, ratingStats, userRating] = await Promise.all([
     userId ? isFavorited(userId, "starship", shipId) : false,

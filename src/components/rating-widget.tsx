@@ -51,7 +51,7 @@ export function RatingWidget({
     });
   }
 
-  const displayScore = hovered || currentScore || 0;
+  const displayScore = hovered || (currentScore ?? 0);
 
   return (
     <div className="flex flex-col gap-2">
@@ -71,9 +71,9 @@ export function RatingWidget({
           <button
             key={star}
             disabled={isPending}
-            onClick={() => handleRate(star)}
-            onMouseEnter={() => setHovered(star)}
-            onMouseLeave={() => setHovered(0)}
+            onClick={() => { handleRate(star); }}
+            onMouseEnter={() => { setHovered(star); }}
+            onMouseLeave={() => { setHovered(0); }}
             className={cn(
               "transition-transform hover:scale-110 disabled:cursor-not-allowed",
               isPending && "opacity-50"

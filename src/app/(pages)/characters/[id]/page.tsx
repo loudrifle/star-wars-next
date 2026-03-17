@@ -30,7 +30,7 @@ export default async function CharacterDetailPage({ params }: Props) {
   if (!character) notFound();
 
   const session = await auth();
-  const userId = session?.user?.id;
+  const userId = session?.user.id;
 
   const [favorited, ratingStats, userRating] = await Promise.all([
     userId ? isFavorited(userId, "character", charId) : false,

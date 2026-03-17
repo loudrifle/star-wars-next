@@ -5,7 +5,6 @@ import { Suspense } from "react";
 import { CharacterImage } from "@/components/character-image";
 import { PageHeader } from "@/components/page-header";
 import { SearchBar } from "@/components/search-bar";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getAllCharacters } from "@/lib/queries";
 import { fmt } from "@/lib/utils";
 

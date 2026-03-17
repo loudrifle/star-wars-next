@@ -1,8 +1,8 @@
 import eslint from "@eslint/js";
+import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import prettier from "eslint-config-prettier/flat";
-import { defineConfig, globalIgnores } from "eslint/config";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import tseslint from "typescript-eslint";
 
@@ -32,6 +32,7 @@ const eslintConfig = defineConfig([
     rules: {
       "@typescript-eslint/no-floating-promises": "error",
       "@typescript-eslint/no-unsafe-assignment": "error",
+      "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/no-explicit-any": "error",

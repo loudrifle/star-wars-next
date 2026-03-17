@@ -28,7 +28,7 @@ export function Crawl() {
     }
 
     el.addEventListener("animationend", handleAnimationEnd);
-    return () => el.removeEventListener("animationend", handleAnimationEnd);
+    return () => { el.removeEventListener("animationend", handleAnimationEnd); };
   }, [started]);
 
   if (!started) {
@@ -47,7 +47,7 @@ export function Crawl() {
             A long time ago in a galaxy far, far away....
           </p>
           <button
-            onClick={() => setStarted(true)}
+            onClick={() => { setStarted(true); }}
             className="group flex items-center gap-3 border border-[#ffe81f]/50 text-[#ffe81f] px-12 py-4 rounded transition-all duration-300 hover:bg-[#ffe81f]/15 hover:border-[#ffe81f] hover:shadow-[0_0_30px_rgba(255,232,31,0.25)] hover:scale-105 hover:cursor-pointer active:scale-95"
             style={{
               fontFamily: "var(--font-bebas, 'Bebas Neue')",

@@ -5,16 +5,16 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/db";
 import {
+  characters,
   characterSpecies,
   characterStarships,
   characterVehicles,
-  characters,
   filmCharacters,
   filmPlanets,
+  films,
   filmSpecies,
   filmStarships,
   filmVehicles,
-  films,
   planets,
   species,
   starships,

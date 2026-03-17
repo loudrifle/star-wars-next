@@ -1,11 +1,11 @@
 "use client";
 
 import { LogIn, LogOut, Menu, User, X } from "lucide-react";
-import type { Session } from "next-auth";
-import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { Session } from "next-auth";
+import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 
 interface NavLink {
@@ -25,7 +25,7 @@ export function MobileNav({ links, session }: MobileNavProps) {
   return (
     <div className="lg:hidden">
       <button
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => { setOpen((o) => !o); }}
         className="text-[var(--color-sw-muted)] hover:text-[var(--color-sw-gold)] transition-colors p-1 cursor-pointer"
         aria-label="Toggle menu"
       >
@@ -39,7 +39,7 @@ export function MobileNav({ links, session }: MobileNavProps) {
             <Link
               key={href}
               href={href}
-              onClick={() => setOpen(false)}
+              onClick={() => { setOpen(false); }}
               className={`font-[var(--font-bebas)] tracking-wider text-base transition-colors ${
                 pathname.startsWith(href)
                   ? "text-[var(--color-sw-gold)]"
@@ -58,7 +58,7 @@ export function MobileNav({ links, session }: MobileNavProps) {
             <div className="flex items-center justify-between">
               <Link
                 href="/profile"
-                onClick={() => setOpen(false)}
+                onClick={() => { setOpen(false); }}
                 className="flex items-center gap-2 text-sm text-[var(--color-sw-muted)] hover:text-[var(--color-sw-gold)] transition-colors"
               >
                 {session.user.image ? (

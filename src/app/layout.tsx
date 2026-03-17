@@ -1,8 +1,9 @@
+import "./globals.css";
+
 import type { Metadata } from "next";
 import { Bebas_Neue, Space_Grotesk } from "next/font/google";
 
 import Providers from "./providers";
-import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
   weight: "400",

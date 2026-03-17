@@ -34,7 +34,7 @@ export function CharacterImage({ src, alt }: CharacterImageProps) {
       width={200}
       height={200}
       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-      onError={() => setFailed(true)}
+      onError={() => { setFailed(true); }}
     />
   );
 }
