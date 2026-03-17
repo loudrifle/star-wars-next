@@ -13,7 +13,6 @@ Built as a portfolio project to showcase modern full-stack development with the 
 - **Auth.js v5** — GitHub/Google OAuth authentication
 - **Tailwind CSS v4** — utility-first styling
 - **shadcn/ui** — accessible component primitives
-- **@tanstack/react-query** — client-side data fetching
 - **Sonner** — toast notifications
 
 ## Features
