@@ -5,8 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
-import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
+
+import { serverSignOut } from "@/actions/auth";
 
 interface NavLink {
   href: string;
@@ -74,22 +75,25 @@ export function MobileNav({ links, session }: MobileNavProps) {
                 )}
                 <span>{session.user.name}</span>
               </Link>
-              <button
-                onClick={() => { void signOut(); setOpen(false); }}
-                className="flex items-center gap-1 text-xs text-[var(--color-sw-muted)] hover:text-[var(--color-sw-red)] transition-colors cursor-pointer"
-              >
-                <LogOut size={14} />
-                Sign out
-              </button>
+              <form action={serverSignOut}>
+                <button
+                  type="submit"
+                  className="flex items-center gap-1 text-xs text-[var(--color-sw-muted)] hover:text-[var(--color-sw-red)] transition-colors cursor-pointer"
+                >
+                  <LogOut size={14} />
+                  Sign out
+                </button>
+              </form>
             </div>
           ) : (
-            <button
-              onClick={() => { void signIn("github"); setOpen(false); }}
-              className="flex items-center gap-1.5 border border-[var(--color-sw-border)] text-[var(--color-sw-muted)] hover:border-[var(--color-sw-gold-dim)] hover:text-[var(--color-sw-gold)] transition-all px-3 py-2 rounded text-sm font-[var(--font-bebas)] tracking-wider cursor-pointer w-fit"
+            <Link
+              href={`/sign-in${pathname !== "/sign-in" ? `?callbackUrl=${encodeURIComponent(pathname)}` : ""}`}
+              onClick={() => { setOpen(false); }}
+              className="flex items-center gap-1.5 border border-[var(--color-sw-border)] text-[var(--color-sw-muted)] hover:border-[var(--color-sw-gold-dim)] hover:text-[var(--color-sw-gold)] transition-all px-3 py-2 rounded text-sm font-[var(--font-bebas)] tracking-wider w-fit"
             >
               <LogIn size={14} />
-              Sign in
-            </button>
+              Sign In
+            </Link>
           )}
         </div>
       )}

@@ -8,6 +8,15 @@ import { favorites } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import type { EntityType } from "@/types";
 
+const ENTITY_PATHS: Record<string, string> = {
+  character: "/characters",
+  film: "/films",
+  planet: "/planets",
+  species: "/species",
+  starship: "/starships",
+  vehicle: "/vehicles",
+};
+
 export async function toggleFavorite(entityType: EntityType, entityId: number) {
   const session = await auth();
   if (!session?.user.id) throw new Error("Not authenticated");
@@ -29,37 +38,12 @@ export async function toggleFavorite(entityType: EntityType, entityId: number) {
   if (existing) {
     await db.delete(favorites).where(eq(favorites.id, existing.id));
     revalidatePath("/profile");
+    revalidatePath(`${ENTITY_PATHS[entityType]}/${entityId}`);
     return { favorited: false };
   }
 
   await db.insert(favorites).values({ userId, entityType, entityId });
   revalidatePath("/profile");
+  revalidatePath(`${ENTITY_PATHS[entityType]}/${entityId}`);
   return { favorited: true };
-}
-
-export async function getUserFavorites(userId: string) {
-  return db
-    .select()
-    .from(favorites)
-    .where(eq(favorites.userId, userId))
-    .all();
-}
-
-export async function isFavorited(
-  userId: string,
-  entityType: EntityType,
-  entityId: number
-): Promise<boolean> {
-  const result = await db
-    .select()
-    .from(favorites)
-    .where(
-      and(
-        eq(favorites.userId, userId),
-        eq(favorites.entityType, entityType),
-        eq(favorites.entityId, entityId)
-      )
-    )
-    .get();
-  return !!result;
 }

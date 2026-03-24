@@ -5,7 +5,9 @@ import { auth } from "@/lib/auth";
 export default auth((req) => {
   const isProfileRoute = req.nextUrl.pathname.startsWith("/profile");
   if (isProfileRoute && !req.auth) {
-    return NextResponse.redirect(new URL("/", req.url));
+    const signInUrl = new URL("/sign-in", req.url);
+    signInUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
+    return NextResponse.redirect(signInUrl);
   }
 });
 

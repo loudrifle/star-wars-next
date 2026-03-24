@@ -3,10 +3,14 @@
 import { LogIn, LogOut, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { Session } from "next-auth";
-import { signIn, signOut } from "next-auth/react";
+
+import { serverSignOut } from "@/actions/auth";
 
 export function AuthButton({ session }: { session: Session | null }) {
+  const pathname = usePathname();
+
   if (session?.user) {
     return (
       <div className="flex items-center gap-3">
@@ -27,25 +31,30 @@ export function AuthButton({ session }: { session: Session | null }) {
           )}
           <span className="hidden md:inline">{session.user.name}</span>
         </Link>
-        <button
-          onClick={() => void signOut()}
-          className="flex items-center gap-1 text-xs text-[var(--color-sw-muted)] hover:text-[var(--color-sw-red)] transition-colors cursor-pointer"
-          title="Sign out"
-        >
-          <LogOut size={14} />
-          <span className="hidden md:inline">Sign out</span>
-        </button>
+        <form action={serverSignOut}>
+          <button
+            type="submit"
+            className="flex items-center gap-1 text-xs text-[var(--color-sw-muted)] hover:text-[var(--color-sw-red)] transition-colors cursor-pointer"
+            title="Sign out"
+          >
+            <LogOut size={14} />
+            <span className="hidden md:inline">Sign out</span>
+          </button>
+        </form>
       </div>
     );
   }
 
+  const callbackUrl =
+    pathname !== "/sign-in" ? `?callbackUrl=${encodeURIComponent(pathname)}` : "";
+
   return (
-    <button
-      onClick={() => void signIn("github")}
-      className="flex items-center gap-1.5 border border-[var(--color-sw-border)] text-[var(--color-sw-muted)] hover:border-[var(--color-sw-gold-dim)] hover:text-[var(--color-sw-gold)] transition-all px-3 py-1.5 rounded text-sm font-[var(--font-bebas)] tracking-wider cursor-pointer"
+    <Link
+      href={`/sign-in${callbackUrl}`}
+      className="flex items-center gap-1.5 border border-[var(--color-sw-border)] text-[var(--color-sw-muted)] hover:border-[var(--color-sw-gold-dim)] hover:text-[var(--color-sw-gold)] transition-all px-3 py-1.5 rounded text-sm font-[var(--font-bebas)] tracking-wider"
     >
       <LogIn size={14} />
-      Sign in
-    </button>
+      Sign In
+    </Link>
   );
 }

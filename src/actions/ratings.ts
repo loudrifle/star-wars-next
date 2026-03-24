@@ -1,12 +1,21 @@
 "use server";
 
-import { and, avg, count, eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/db";
 import { ratings } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import type { EntityType } from "@/types";
+
+const ENTITY_PATHS: Record<string, string> = {
+  character: "/characters",
+  film: "/films",
+  planet: "/planets",
+  species: "/species",
+  starship: "/starships",
+  vehicle: "/vehicles",
+};
 
 export async function upsertRating(
   entityType: EntityType,
@@ -46,6 +55,7 @@ export async function upsertRating(
   }
 
   revalidatePath("/profile");
+  revalidatePath(`${ENTITY_PATHS[entityType]}/${entityId}`);
 }
 
 export async function deleteRating(
@@ -66,46 +76,5 @@ export async function deleteRating(
     );
 
   revalidatePath("/profile");
-}
-
-export async function getEntityRatingStats(
-  entityType: EntityType,
-  entityId: number
-) {
-  const result = await db
-    .select({
-      avg: avg(ratings.score),
-      count: count(ratings.id),
-    })
-    .from(ratings)
-    .where(
-      and(
-        eq(ratings.entityType, entityType),
-        eq(ratings.entityId, entityId)
-      )
-    )
-    .get();
-
-  return {
-    average: result?.avg ? parseFloat(result.avg) : null,
-    count: result?.count ?? 0,
-  };
-}
-
-export async function getUserRating(
-  userId: string,
-  entityType: EntityType,
-  entityId: number
-) {
-  return db
-    .select()
-    .from(ratings)
-    .where(
-      and(
-        eq(ratings.userId, userId),
-        eq(ratings.entityType, entityType),
-        eq(ratings.entityId, entityId)
-      )
-    )
-    .get();
+  revalidatePath(`${ENTITY_PATHS[entityType]}/${entityId}`);
 }

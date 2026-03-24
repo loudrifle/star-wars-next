@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { isFavorited } from "@/actions/favorites";
-import { getEntityRatingStats, getUserRating } from "@/actions/ratings";
 import { FavoriteButton } from "@/components/favorite-button";
 import { RatingWidget } from "@/components/rating-widget";
 import { StatItem } from "@/components/stat-item";
 import { Badge } from "@/components/ui/badge";
 import { auth } from "@/lib/auth";
+import { getEntityRatingStats, getUserRating, isFavorited } from "@/lib/queries";
 import { getStarshipById } from "@/lib/queries";
 import { toRoman } from "@/lib/utils";
 

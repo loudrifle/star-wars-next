@@ -1,4 +1,4 @@
-import { asc, eq, like } from "drizzle-orm";
+import { and, asc, avg, count, eq, like } from "drizzle-orm";
 
 import { db } from "@/db";
 import {
@@ -6,6 +6,7 @@ import {
   characterSpecies,
   characterStarships,
   characterVehicles,
+  favorites,
   filmCharacters,
   filmPlanets,
   films,
@@ -13,10 +14,12 @@ import {
   filmStarships,
   filmVehicles,
   planets,
+  ratings,
   species,
   starships,
   vehicles,
 } from "@/db/schema";
+import type { EntityType } from "@/types";
 
 // ── Films ─────────────────────────────────────────────────────────────────────
 
@@ -336,4 +339,73 @@ export async function getVehicleById(id: number) {
     pilots: pilots.map((r) => r.character),
     films: vehicleFilms.map((r) => r.film),
   };
+}
+
+// ── Favorites ─────────────────────────────────────────────────────────────────
+
+export async function getUserFavorites(userId: string) {
+  return db.select().from(favorites).where(eq(favorites.userId, userId)).all();
+}
+
+export async function isFavorited(
+  userId: string,
+  entityType: EntityType,
+  entityId: number
+): Promise<boolean> {
+  const result = await db
+    .select()
+    .from(favorites)
+    .where(
+      and(
+        eq(favorites.userId, userId),
+        eq(favorites.entityType, entityType),
+        eq(favorites.entityId, entityId)
+      )
+    )
+    .get();
+  return !!result;
+}
+
+// ── Ratings ───────────────────────────────────────────────────────────────────
+
+export async function getEntityRatingStats(
+  entityType: EntityType,
+  entityId: number
+) {
+  const result = await db
+    .select({
+      avg: avg(ratings.score),
+      count: count(ratings.id),
+    })
+    .from(ratings)
+    .where(
+      and(
+        eq(ratings.entityType, entityType),
+        eq(ratings.entityId, entityId)
+      )
+    )
+    .get();
+
+  return {
+    average: result?.avg ? parseFloat(result.avg) : null,
+    count: result?.count ?? 0,
+  };
+}
+
+export async function getUserRating(
+  userId: string,
+  entityType: EntityType,
+  entityId: number
+) {
+  return db
+    .select()
+    .from(ratings)
+    .where(
+      and(
+        eq(ratings.userId, userId),
+        eq(ratings.entityType, entityType),
+        eq(ratings.entityId, entityId)
+      )
+    )
+    .get();
 }

@@ -2,7 +2,7 @@
 
 import { Star } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import { deleteRating, upsertRating } from "@/actions/ratings";
@@ -28,6 +28,10 @@ export function RatingWidget({
   const [hovered, setHovered] = useState(0);
   const [currentScore, setCurrentScore] = useState(initialScore);
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    setCurrentScore(initialScore);
+  }, [initialScore]);
 
   function handleRate(score: number) {
     if (!session) {
