@@ -14,6 +14,7 @@ Built as a portfolio project to showcase modern full-stack development with the 
 - **Tailwind CSS v4** — utility-first styling
 - **shadcn/ui** — accessible component primitives
 - **Sonner** — toast notifications
+- **Vitest** + **React Testing Library** — unit and component tests
 
 ## Features
 
@@ -36,6 +37,7 @@ src/
 ├── app/
 │   ├── (pages)/      # Route group with navbar
 │   │   ├── home/         # Galaxy Explorer hub
+│   │   ├── sign-in/      # OAuth provider selection
 │   │   ├── characters/[id]/
 │   │   ├── films/[id]/
 │   │   ├── planets/[id]/
@@ -65,7 +67,7 @@ src/
 
 - Node.js 22+
 - [Turso CLI](https://docs.turso.tech/cli/introduction)
-- A GitHub OAuth App (for authentication)
+- A GitHub OAuth App and/or a Google OAuth Client (for authentication)
 
 ### 1. Install dependencies
 
@@ -88,11 +90,16 @@ cp .env.local.example .env.local
 | `AUTH_SECRET` | Random secret — generate with `openssl rand -base64 32` |
 | `AUTH_GITHUB_ID` | GitHub OAuth App Client ID |
 | `AUTH_GITHUB_SECRET` | GitHub OAuth App Client Secret |
+| `AUTH_GOOGLE_ID` | Google OAuth Client ID (optional) |
+| `AUTH_GOOGLE_SECRET` | Google OAuth Client Secret (optional) |
 | `SEED_SECRET` | Any string — used to protect the seed endpoint |
 
 **GitHub OAuth App** — create one at github.com/settings/developers:
 - Homepage URL: `http://localhost:3000`
 - Callback URL: `http://localhost:3000/api/auth/callback/github`
+
+**Google OAuth Client** — create one at console.cloud.google.com → APIs & Services → Credentials:
+- Authorised redirect URI: `http://localhost:3000/api/auth/callback/google`
 
 **Turso database:**
 ```bash
@@ -131,6 +138,8 @@ This fetches ~300 entities from [SWAPI](https://swapi.dev) and character images 
 npm run dev          # Development server
 npm run build        # Production build
 npm run lint         # ESLint
+npm run test         # Run test suite (Vitest)
+npm run test:watch   # Run tests in watch mode
 npm run db:generate  # Generate Drizzle migrations
 npm run db:migrate   # Apply migrations
 npm run db:studio    # Open Drizzle Studio (DB GUI)
