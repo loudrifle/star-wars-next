@@ -1,12 +1,13 @@
 "use client";
 
-import { LogIn, LogOut, Menu, User, X } from "lucide-react";
+import { LogIn, Menu, User, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import { serverSignOut } from "@/actions/auth";
+import { SignOutButton } from "@/components/sign-out-button";
 import type { Session } from "@/lib/auth";
 
 interface NavLink {
@@ -76,13 +77,11 @@ export function MobileNav({ links, session }: MobileNavProps) {
                 <span>{session.user.name}</span>
               </Link>
               <form action={serverSignOut}>
-                <button
-                  type="submit"
-                  className="flex items-center gap-1 text-xs text-[var(--color-sw-muted)] hover:text-[var(--color-sw-red)] transition-colors cursor-pointer"
-                >
-                  <LogOut size={14} />
-                  Sign out
-                </button>
+                <SignOutButton
+                  iconSize={14}
+                  className="flex items-center gap-1 text-xs text-[var(--color-sw-muted)] hover:text-[var(--color-sw-red)] transition-colors"
+                  labelClassName=""
+                />
               </form>
             </div>
           ) : (

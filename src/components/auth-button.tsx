@@ -1,11 +1,12 @@
 "use client";
 
-import { LogIn, LogOut, User } from "lucide-react";
+import { LogIn, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { serverSignOut } from "@/actions/auth";
+import { SignOutButton } from "@/components/sign-out-button";
 import type { Session } from "@/lib/auth";
 
 export function AuthButton({ session }: { session: Session | null }) {
@@ -32,14 +33,11 @@ export function AuthButton({ session }: { session: Session | null }) {
           <span className="hidden md:inline">{session.user.name}</span>
         </Link>
         <form action={serverSignOut}>
-          <button
-            type="submit"
-            className="flex items-center gap-1 text-xs text-[var(--color-sw-muted)] hover:text-[var(--color-sw-red)] transition-colors cursor-pointer"
-            title="Sign out"
-          >
-            <LogOut size={14} />
-            <span className="hidden md:inline">Sign out</span>
-          </button>
+          <SignOutButton
+            iconSize={14}
+            className="flex items-center gap-1 text-xs text-[var(--color-sw-muted)] hover:text-[var(--color-sw-red)] transition-colors"
+            labelClassName="hidden md:inline"
+          />
         </form>
       </div>
     );
