@@ -7,7 +7,7 @@ import { AuthButton } from "./auth-button";
 import { MobileNav } from "./mobile-nav";
 import { NavLinks } from "./nav-links";
 
-const NAV_LINKS = [
+const BASE_LINKS = [
   { href: "/home", label: "Home" },
   { href: "/films", label: "Films" },
   { href: "/characters", label: "Characters" },
@@ -15,10 +15,16 @@ const NAV_LINKS = [
   { href: "/species", label: "Species" },
   { href: "/starships", label: "Starships" },
   { href: "/vehicles", label: "Vehicles" },
+  { href: "/ratings", label: "Ratings" },
 ] as const;
 
 export async function Navbar() {
   const session = await auth.api.getSession({ headers: await headers() });
+
+  const isAdmin = session?.user?.email && session.user.email === process.env.ADMIN_EMAIL;
+  const NAV_LINKS: readonly { href: string; label: string }[] = isAdmin
+    ? [...BASE_LINKS, { href: "/admin", label: "Admin" }]
+    : BASE_LINKS;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--color-sw-border)] bg-[var(--color-sw-black)]/90 backdrop-blur-md">

@@ -1,4 +1,4 @@
-import { and, asc, avg, count, eq, like } from "drizzle-orm";
+import { and, asc, avg, count, desc, eq, inArray, like, sql } from "drizzle-orm";
 
 import { db } from "@/db";
 import {
@@ -17,9 +17,20 @@ import {
   ratings,
   species,
   starships,
+  user,
   vehicles,
 } from "@/db/schema";
 import type { EntityType } from "@/types";
+
+import { DEFAULT_PAGE_SIZE } from "./constants";
+
+export interface PaginatedResult<T> {
+  data: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
 
 // ── Films ─────────────────────────────────────────────────────────────────────
 
@@ -82,16 +93,21 @@ export async function getFilmById(id: number) {
 
 // ── Characters ────────────────────────────────────────────────────────────────
 
-export async function getAllCharacters(search?: string) {
-  if (search) {
-    return db
-      .select()
-      .from(characters)
-      .where(like(characters.name, `%${search}%`))
-      .orderBy(asc(characters.name))
-      .all();
-  }
-  return db.select().from(characters).orderBy(asc(characters.name)).all();
+export async function getAllCharacters(
+  search?: string,
+  page = 1,
+  pageSize = DEFAULT_PAGE_SIZE
+): Promise<PaginatedResult<typeof characters.$inferSelect>> {
+  const where = search ? like(characters.name, `%${search}%`) : undefined;
+  const offset = (page - 1) * pageSize;
+
+  const [data, countResult] = await Promise.all([
+    db.select().from(characters).where(where).orderBy(asc(characters.name)).limit(pageSize).offset(offset).all(),
+    db.select({ total: count() }).from(characters).where(where).get(),
+  ]);
+
+  const total = countResult?.total ?? 0;
+  return { data, total, page, pageSize, totalPages: Math.ceil(total / pageSize) };
 }
 
 export async function getCharacterById(id: number) {
@@ -150,16 +166,21 @@ export async function getCharacterById(id: number) {
 
 // ── Planets ───────────────────────────────────────────────────────────────────
 
-export async function getAllPlanets(search?: string) {
-  if (search) {
-    return db
-      .select()
-      .from(planets)
-      .where(like(planets.name, `%${search}%`))
-      .orderBy(asc(planets.name))
-      .all();
-  }
-  return db.select().from(planets).orderBy(asc(planets.name)).all();
+export async function getAllPlanets(
+  search?: string,
+  page = 1,
+  pageSize = DEFAULT_PAGE_SIZE
+): Promise<PaginatedResult<typeof planets.$inferSelect>> {
+  const where = search ? like(planets.name, `%${search}%`) : undefined;
+  const offset = (page - 1) * pageSize;
+
+  const [data, countResult] = await Promise.all([
+    db.select().from(planets).where(where).orderBy(asc(planets.name)).limit(pageSize).offset(offset).all(),
+    db.select({ total: count() }).from(planets).where(where).get(),
+  ]);
+
+  const total = countResult?.total ?? 0;
+  return { data, total, page, pageSize, totalPages: Math.ceil(total / pageSize) };
 }
 
 export async function getPlanetById(id: number) {
@@ -201,16 +222,21 @@ export async function getPlanetById(id: number) {
 
 // ── Species ───────────────────────────────────────────────────────────────────
 
-export async function getAllSpecies(search?: string) {
-  if (search) {
-    return db
-      .select()
-      .from(species)
-      .where(like(species.name, `%${search}%`))
-      .orderBy(asc(species.name))
-      .all();
-  }
-  return db.select().from(species).orderBy(asc(species.name)).all();
+export async function getAllSpecies(
+  search?: string,
+  page = 1,
+  pageSize = DEFAULT_PAGE_SIZE
+): Promise<PaginatedResult<typeof species.$inferSelect>> {
+  const where = search ? like(species.name, `%${search}%`) : undefined;
+  const offset = (page - 1) * pageSize;
+
+  const [data, countResult] = await Promise.all([
+    db.select().from(species).where(where).orderBy(asc(species.name)).limit(pageSize).offset(offset).all(),
+    db.select({ total: count() }).from(species).where(where).get(),
+  ]);
+
+  const total = countResult?.total ?? 0;
+  return { data, total, page, pageSize, totalPages: Math.ceil(total / pageSize) };
 }
 
 export async function getSpeciesById(id: number) {
@@ -251,16 +277,21 @@ export async function getSpeciesById(id: number) {
 
 // ── Starships ─────────────────────────────────────────────────────────────────
 
-export async function getAllStarships(search?: string) {
-  if (search) {
-    return db
-      .select()
-      .from(starships)
-      .where(like(starships.name, `%${search}%`))
-      .orderBy(asc(starships.name))
-      .all();
-  }
-  return db.select().from(starships).orderBy(asc(starships.name)).all();
+export async function getAllStarships(
+  search?: string,
+  page = 1,
+  pageSize = DEFAULT_PAGE_SIZE
+): Promise<PaginatedResult<typeof starships.$inferSelect>> {
+  const where = search ? like(starships.name, `%${search}%`) : undefined;
+  const offset = (page - 1) * pageSize;
+
+  const [data, countResult] = await Promise.all([
+    db.select().from(starships).where(where).orderBy(asc(starships.name)).limit(pageSize).offset(offset).all(),
+    db.select({ total: count() }).from(starships).where(where).get(),
+  ]);
+
+  const total = countResult?.total ?? 0;
+  return { data, total, page, pageSize, totalPages: Math.ceil(total / pageSize) };
 }
 
 export async function getStarshipById(id: number) {
@@ -297,16 +328,21 @@ export async function getStarshipById(id: number) {
 
 // ── Vehicles ──────────────────────────────────────────────────────────────────
 
-export async function getAllVehicles(search?: string) {
-  if (search) {
-    return db
-      .select()
-      .from(vehicles)
-      .where(like(vehicles.name, `%${search}%`))
-      .orderBy(asc(vehicles.name))
-      .all();
-  }
-  return db.select().from(vehicles).orderBy(asc(vehicles.name)).all();
+export async function getAllVehicles(
+  search?: string,
+  page = 1,
+  pageSize = DEFAULT_PAGE_SIZE
+): Promise<PaginatedResult<typeof vehicles.$inferSelect>> {
+  const where = search ? like(vehicles.name, `%${search}%`) : undefined;
+  const offset = (page - 1) * pageSize;
+
+  const [data, countResult] = await Promise.all([
+    db.select().from(vehicles).where(where).orderBy(asc(vehicles.name)).limit(pageSize).offset(offset).all(),
+    db.select({ total: count() }).from(vehicles).where(where).get(),
+  ]);
+
+  const total = countResult?.total ?? 0;
+  return { data, total, page, pageSize, totalPages: Math.ceil(total / pageSize) };
 }
 
 export async function getVehicleById(id: number) {
@@ -408,4 +444,141 @@ export async function getUserRating(
       )
     )
     .get();
+}
+
+// ── Community ratings (public leaderboard) ────────────────────────────────────
+
+export interface RatedEntity {
+  entityType: string;
+  entityId: number;
+  avgScore: number;
+  ratingCount: number;
+  name: string;
+}
+
+export async function getTopRatedEntities(limit = 5): Promise<RatedEntity[]> {
+  const entityTypes: EntityType[] = ["character", "film", "planet", "species", "starship", "vehicle"];
+
+  const perTypeResults = await Promise.all(
+    entityTypes.map((entityType) =>
+      db
+        .select({
+          entityType: ratings.entityType,
+          entityId: ratings.entityId,
+          avgScore: avg(ratings.score),
+          ratingCount: count(ratings.id),
+        })
+        .from(ratings)
+        .where(eq(ratings.entityType, entityType))
+        .groupBy(ratings.entityId)
+        .having(sql`count(${ratings.id}) >= 1`)
+        .orderBy(desc(avg(ratings.score)), desc(count(ratings.id)))
+        .limit(limit)
+        .all()
+    )
+  );
+
+  const charIds = perTypeResults[0].map((r) => r.entityId);
+  const filmIds = perTypeResults[1].map((r) => r.entityId);
+  const planetIds = perTypeResults[2].map((r) => r.entityId);
+  const speciesIds = perTypeResults[3].map((r) => r.entityId);
+  const starshipIds = perTypeResults[4].map((r) => r.entityId);
+  const vehicleIds = perTypeResults[5].map((r) => r.entityId);
+
+  const [charNames, filmNames, planetNames, speciesNames, starshipNames, vehicleNames] =
+    await Promise.all([
+      charIds.length ? db.select({ id: characters.id, name: characters.name }).from(characters).where(inArray(characters.id, charIds)).all() : [],
+      filmIds.length ? db.select({ id: films.id, name: films.title }).from(films).where(inArray(films.id, filmIds)).all() : [],
+      planetIds.length ? db.select({ id: planets.id, name: planets.name }).from(planets).where(inArray(planets.id, planetIds)).all() : [],
+      speciesIds.length ? db.select({ id: species.id, name: species.name }).from(species).where(inArray(species.id, speciesIds)).all() : [],
+      starshipIds.length ? db.select({ id: starships.id, name: starships.name }).from(starships).where(inArray(starships.id, starshipIds)).all() : [],
+      vehicleIds.length ? db.select({ id: vehicles.id, name: vehicles.name }).from(vehicles).where(inArray(vehicles.id, vehicleIds)).all() : [],
+    ]);
+
+  const nameMaps = [
+    new Map(charNames.map((r) => [r.id, r.name])),
+    new Map(filmNames.map((r) => [r.id, r.name])),
+    new Map(planetNames.map((r) => [r.id, r.name])),
+    new Map(speciesNames.map((r) => [r.id, r.name])),
+    new Map(starshipNames.map((r) => [r.id, r.name])),
+    new Map(vehicleNames.map((r) => [r.id, r.name])),
+  ];
+
+  return entityTypes.flatMap((entityType, i) =>
+    perTypeResults[i].map((entry) => ({
+      entityType,
+      entityId: entry.entityId,
+      avgScore: entry.avgScore ? parseFloat(entry.avgScore) : 0,
+      ratingCount: entry.ratingCount,
+      name: nameMaps[i].get(entry.entityId) ?? `#${entry.entityId}`,
+    }))
+  );
+}
+
+// ── Admin stats ───────────────────────────────────────────────────────────────
+
+export async function getAdminStats() {
+  const [ratingsTotal, favoritesTotal, activeUsersResult, totalUsersResult, topEntitiesRaw] =
+    await Promise.all([
+      db.select({ total: count() }).from(ratings).get(),
+      db.select({ total: count() }).from(favorites).get(),
+      db.select({ total: sql<number>`count(distinct ${ratings.userId})` }).from(ratings).get(),
+      db.select({ total: count() }).from(user).get(),
+      db
+        .select({
+          entityType: ratings.entityType,
+          entityId: ratings.entityId,
+          avgScore: avg(ratings.score),
+          ratingCount: count(ratings.id),
+        })
+        .from(ratings)
+        .groupBy(ratings.entityType, ratings.entityId)
+        .orderBy(desc(avg(ratings.score)), desc(count(ratings.id)))
+        .limit(30)
+        .all(),
+    ]);
+
+  // Batch name lookup
+  const allIds = (type: string) => topEntitiesRaw.filter((r) => r.entityType === type).map((r) => r.entityId);
+  const charIds = allIds("character");
+  const filmIds = allIds("film");
+  const planetIds = allIds("planet");
+  const speciesIds = allIds("species");
+  const starshipIds = allIds("starship");
+  const vehicleIds = allIds("vehicle");
+
+  const [charNames, filmNames, planetNames, speciesNames, starshipNames, vehicleNames] =
+    await Promise.all([
+      charIds.length ? db.select({ id: characters.id, name: characters.name }).from(characters).where(inArray(characters.id, charIds)).all() : [],
+      filmIds.length ? db.select({ id: films.id, name: films.title }).from(films).where(inArray(films.id, filmIds)).all() : [],
+      planetIds.length ? db.select({ id: planets.id, name: planets.name }).from(planets).where(inArray(planets.id, planetIds)).all() : [],
+      speciesIds.length ? db.select({ id: species.id, name: species.name }).from(species).where(inArray(species.id, speciesIds)).all() : [],
+      starshipIds.length ? db.select({ id: starships.id, name: starships.name }).from(starships).where(inArray(starships.id, starshipIds)).all() : [],
+      vehicleIds.length ? db.select({ id: vehicles.id, name: vehicles.name }).from(vehicles).where(inArray(vehicles.id, vehicleIds)).all() : [],
+    ]);
+
+  const nameMap = new Map<string, Map<number, string>>([
+    ["character", new Map(charNames.map((r) => [r.id, r.name]))],
+    ["film", new Map(filmNames.map((r) => [r.id, r.name]))],
+    ["planet", new Map(planetNames.map((r) => [r.id, r.name]))],
+    ["species", new Map(speciesNames.map((r) => [r.id, r.name]))],
+    ["starship", new Map(starshipNames.map((r) => [r.id, r.name]))],
+    ["vehicle", new Map(vehicleNames.map((r) => [r.id, r.name]))],
+  ]);
+
+  const topEntities = topEntitiesRaw.map((entry) => ({
+    entityType: entry.entityType,
+    entityId: entry.entityId,
+    avgScore: entry.avgScore ? parseFloat(entry.avgScore) : 0,
+    ratingCount: entry.ratingCount,
+    name: nameMap.get(entry.entityType)?.get(entry.entityId) ?? `#${entry.entityId}`,
+  }));
+
+  return {
+    totalRatings: ratingsTotal?.total ?? 0,
+    totalFavorites: favoritesTotal?.total ?? 0,
+    activeUsers: Number(activeUsersResult?.total ?? 0),
+    totalUsers: totalUsersResult?.total ?? 0,
+    topEntities,
+  };
 }

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { PageHeader } from "@/components/page-header";
+import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/search-bar";
 import { getAllPlanets } from "@/lib/queries";
 import { fmt } from "@/lib/utils";
@@ -10,16 +11,17 @@ import { fmt } from "@/lib/utils";
 export const metadata: Metadata = { title: "Planets" };
 
 interface Props {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; page?: string }>;
 }
 
 export default async function PlanetsPage({ searchParams }: Props) {
-  const { q } = await searchParams;
-  const allPlanets = await getAllPlanets(q);
+  const { q, page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam ?? "1") || 1);
+  const { data: allPlanets, total, totalPages } = await getAllPlanets(q, page);
 
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <PageHeader title="Planets" subtitle="Worlds of the Star Wars galaxy" count={allPlanets.length} />
+      <PageHeader title="Planets" subtitle="Worlds of the Star Wars galaxy" count={total} />
       <div className="mb-6">
         <Suspense><SearchBar placeholder="Search planets..." /></Suspense>
       </div>
@@ -46,6 +48,7 @@ export default async function PlanetsPage({ searchParams }: Props) {
           <p className="col-span-full text-center text-[var(--color-sw-muted)] py-12">No planets found{q ? ` for "${q}"` : ""}.</p>
         )}
       </div>
+      <Pagination currentPage={page} totalPages={totalPages} searchParams={{ q }} />
     </div>
   );
 }

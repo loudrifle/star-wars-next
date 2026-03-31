@@ -19,6 +19,7 @@ export function SearchBar({ placeholder }: { placeholder: string }) {
     } else {
       params.delete("q");
     }
+    params.delete("page");
     startTransition(() => {
       router.replace(`?${params.toString()}`);
     });

@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 import { CharacterImage } from "@/components/character-image";
 import { PageHeader } from "@/components/page-header";
+import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/search-bar";
 import { getAllCharacters } from "@/lib/queries";
 import { fmt } from "@/lib/utils";
@@ -11,19 +12,20 @@ import { fmt } from "@/lib/utils";
 export const metadata: Metadata = { title: "Characters" };
 
 interface Props {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; page?: string }>;
 }
 
 export default async function CharactersPage({ searchParams }: Props) {
-  const { q } = await searchParams;
-  const allCharacters = await getAllCharacters(q);
+  const { q, page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam ?? "1") || 1);
+  const { data: allCharacters, total, totalPages } = await getAllCharacters(q, page);
 
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <PageHeader
         title="Characters"
         subtitle="Every person in the Star Wars saga"
-        count={allCharacters.length}
+        count={total}
       />
 
       <div className="mb-6">
@@ -73,6 +75,8 @@ export default async function CharactersPage({ searchParams }: Props) {
           </p>
         )}
       </div>
+
+      <Pagination currentPage={page} totalPages={totalPages} searchParams={{ q }} />
     </div>
   );
 }

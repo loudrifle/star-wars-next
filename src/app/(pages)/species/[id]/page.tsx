@@ -17,7 +17,16 @@ interface Props { params: Promise<{ id: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const s = await getSpeciesById(parseInt(id));
-  return { title: s?.name ?? "Species" };
+  const name = s?.name ?? "Species";
+  const description = s
+    ? `${name} — ${s.classification ?? "unknown"} species, ${s.designation ?? "unknown"} designation. Language: ${s.language ?? "unknown"}.`
+    : "Star Wars species on Galaxy Explorer.";
+  return {
+    title: name,
+    description,
+    openGraph: { title: `${name} | Galaxy Explorer`, description, type: "article" },
+    twitter: { card: "summary", title: `${name} | Galaxy Explorer`, description },
+  };
 }
 
 export default async function SpeciesDetailPage({ params }: Props) {

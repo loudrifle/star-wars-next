@@ -20,7 +20,16 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const character = await getCharacterById(parseInt(id));
-  return { title: character?.name ?? "Character" };
+  const name = character?.name ?? "Character";
+  const description = character
+    ? `${name} — born ${character.birthYear ?? "unknown"}, ${character.gender ?? "unknown"} character from the Star Wars universe.`
+    : "Star Wars character profile on Galaxy Explorer.";
+  return {
+    title: name,
+    description,
+    openGraph: { title: `${name} | Galaxy Explorer`, description, type: "article" },
+    twitter: { card: "summary", title: `${name} | Galaxy Explorer`, description },
+  };
 }
 
 export default async function CharacterDetailPage({ params }: Props) {

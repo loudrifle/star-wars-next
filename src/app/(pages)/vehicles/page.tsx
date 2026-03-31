@@ -3,21 +3,23 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { PageHeader } from "@/components/page-header";
+import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/search-bar";
 import { getAllVehicles } from "@/lib/queries";
 import { fmt } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Vehicles" };
 
-interface Props { searchParams: Promise<{ q?: string }> }
+interface Props { searchParams: Promise<{ q?: string; page?: string }> }
 
 export default async function VehiclesPage({ searchParams }: Props) {
-  const { q } = await searchParams;
-  const allVehicles = await getAllVehicles(q);
+  const { q, page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam ?? "1") || 1);
+  const { data: allVehicles, total, totalPages } = await getAllVehicles(q, page);
 
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <PageHeader title="Vehicles" subtitle="Ground and atmospheric craft of the saga" count={allVehicles.length} />
+      <PageHeader title="Vehicles" subtitle="Ground and atmospheric craft of the saga" count={total} />
       <div className="mb-6">
         <Suspense><SearchBar placeholder="Search vehicles..." /></Suspense>
       </div>
@@ -45,6 +47,7 @@ export default async function VehiclesPage({ searchParams }: Props) {
           <p className="col-span-full text-center text-[var(--color-sw-muted)] py-12">No vehicles found{q ? ` for "${q}"` : ""}.</p>
         )}
       </div>
+      <Pagination currentPage={page} totalPages={totalPages} searchParams={{ q }} />
     </div>
   );
 }

@@ -3,21 +3,23 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { PageHeader } from "@/components/page-header";
+import { Pagination } from "@/components/pagination";
 import { SearchBar } from "@/components/search-bar";
 import { getAllSpecies } from "@/lib/queries";
 import { fmt } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Species" };
 
-interface Props { searchParams: Promise<{ q?: string }> }
+interface Props { searchParams: Promise<{ q?: string; page?: string }> }
 
 export default async function SpeciesPage({ searchParams }: Props) {
-  const { q } = await searchParams;
-  const allSpecies = await getAllSpecies(q);
+  const { q, page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam ?? "1") || 1);
+  const { data: allSpecies, total, totalPages } = await getAllSpecies(q, page);
 
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <PageHeader title="Species" subtitle="Lifeforms across the galaxy" count={allSpecies.length} />
+      <PageHeader title="Species" subtitle="Lifeforms across the galaxy" count={total} />
       <div className="mb-6">
         <Suspense><SearchBar placeholder="Search species..." /></Suspense>
       </div>
@@ -44,6 +46,7 @@ export default async function SpeciesPage({ searchParams }: Props) {
           <p className="col-span-full text-center text-[var(--color-sw-muted)] py-12">No species found{q ? ` for "${q}"` : ""}.</p>
         )}
       </div>
+      <Pagination currentPage={page} totalPages={totalPages} searchParams={{ q }} />
     </div>
   );
 }

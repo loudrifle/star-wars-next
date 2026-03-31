@@ -17,7 +17,16 @@ interface Props { params: Promise<{ id: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const v = await getVehicleById(parseInt(id));
-  return { title: v?.name ?? "Vehicle" };
+  const name = v?.name ?? "Vehicle";
+  const description = v
+    ? `${name} — ${v.vehicleClass ?? "unknown"} class vehicle. Max speed: ${v.maxAtmospheringSpeed ?? "unknown"}, crew: ${v.crew ?? "unknown"}.`
+    : "Star Wars vehicle on Galaxy Explorer.";
+  return {
+    title: name,
+    description,
+    openGraph: { title: `${name} | Galaxy Explorer`, description, type: "article" },
+    twitter: { card: "summary", title: `${name} | Galaxy Explorer`, description },
+  };
 }
 
 export default async function VehicleDetailPage({ params }: Props) {

@@ -19,7 +19,16 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const film = await getFilmById(parseInt(id));
-  return { title: film?.title ?? "Film" };
+  const title = film?.title ?? "Film";
+  const description = film
+    ? `${title} — directed by ${film.director}, released ${film.releaseDate?.slice(0, 4) ?? "unknown"}. Explore the complete cast, planets, starships and more.`
+    : "Star Wars film on Galaxy Explorer.";
+  return {
+    title,
+    description,
+    openGraph: { title: `${title} | Galaxy Explorer`, description, type: "article" },
+    twitter: { card: "summary", title: `${title} | Galaxy Explorer`, description },
+  };
 }
 
 export default async function FilmDetailPage({ params }: Props) {
