@@ -1,21 +1,9 @@
 // @vitest-environment node
 import { unstable_doesMiddlewareMatch } from "next/experimental/testing/server";
 import { NextRequest } from "next/server";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
-// ── Mocks ─────────────────────────────────────────────────────────────────────
-
-const mockGetSession = vi.hoisted(() => vi.fn());
-
-vi.mock("@/lib/auth", () => ({
-  auth: {
-    api: {
-      getSession: mockGetSession,
-    },
-  },
-}));
-
-import { config,proxy } from "@/proxy";
+import { config, proxy } from "@/proxy";
 
 // ── Config matcher ────────────────────────────────────────────────────────────
 
@@ -63,39 +51,39 @@ describe("proxy config matcher", () => {
 
 // ── Auth guard ────────────────────────────────────────────────────────────────
 
-describe("proxy auth guard", () => {
-  beforeEach(() => {
-    mockGetSession.mockReset();
-  });
+function makeRequest(url: string, cookie?: string) {
+  const req = new NextRequest(url);
+  if (cookie) {
+    req.cookies.set("better-auth.session_token", cookie);
+  }
+  return req;
+}
 
-  it("redirects unauthenticated request to /profile → /sign-in", async () => {
-    mockGetSession.mockResolvedValue(null);
-    const req = new NextRequest("http://localhost/profile");
-    const response = await proxy(req);
+describe("proxy auth guard", () => {
+  it("redirects unauthenticated request to /profile → /sign-in", () => {
+    const req = makeRequest("http://localhost/profile");
+    const response = proxy(req);
     expect(response?.status).toBe(307);
     expect(response?.headers.get("location")).toBe(
       "http://localhost/sign-in?callbackUrl=%2Fprofile"
     );
   });
 
-  it("passes through authenticated request to /profile", async () => {
-    mockGetSession.mockResolvedValue({ user: { id: "user-1" } });
-    const req = new NextRequest("http://localhost/profile");
-    const response = await proxy(req);
+  it("passes through authenticated request to /profile", () => {
+    const req = makeRequest("http://localhost/profile", "test-session-token");
+    const response = proxy(req);
     expect(response).toBeUndefined();
   });
 
-  it("passes through unauthenticated request to /characters (not protected)", async () => {
-    mockGetSession.mockResolvedValue(null);
-    const req = new NextRequest("http://localhost/characters");
-    const response = await proxy(req);
+  it("passes through unauthenticated request to /characters (not protected)", () => {
+    const req = makeRequest("http://localhost/characters");
+    const response = proxy(req);
     expect(response).toBeUndefined();
   });
 
-  it("passes through unauthenticated request to / (not protected)", async () => {
-    mockGetSession.mockResolvedValue(null);
-    const req = new NextRequest("http://localhost/");
-    const response = await proxy(req);
+  it("passes through unauthenticated request to / (not protected)", () => {
+    const req = makeRequest("http://localhost/");
+    const response = proxy(req);
     expect(response).toBeUndefined();
   });
 });

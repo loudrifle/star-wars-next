@@ -1,7 +1,7 @@
 "use client";
 
 import { Heart } from "lucide-react";
-import { useTransition } from "react";
+import { useOptimistic, useTransition } from "react";
 import { toast } from "sonner";
 
 import { toggleFavorite } from "@/actions/favorites";
@@ -22,6 +22,7 @@ export function FavoriteButton({
 }: FavoriteButtonProps) {
   const { data: session } = useSession();
   const [isPending, startTransition] = useTransition();
+  const [favorited, setOptimisticFavorited] = useOptimistic(initialFavorited);
 
   function handleClick() {
     if (!session) {
@@ -30,6 +31,7 @@ export function FavoriteButton({
     }
 
     startTransition(async () => {
+      setOptimisticFavorited(!favorited);
       try {
         const result = await toggleFavorite(entityType, entityId);
         toast.success(result.favorited ? "Added to favorites" : "Removed from favorites");
@@ -45,18 +47,18 @@ export function FavoriteButton({
       disabled={isPending}
       className={cn(
         "flex items-center gap-2 px-4 py-2 rounded border text-sm font-[var(--font-bebas)] tracking-wider transition-all",
-        initialFavorited
+        favorited
           ? "border-[var(--color-sw-red)]/60 text-[var(--color-sw-red)] bg-[var(--color-sw-red)]/10 hover:bg-[var(--color-sw-red)]/20"
           : "border-[var(--color-sw-border)] text-[var(--color-sw-muted)] hover:border-[var(--color-sw-red)]/60 hover:text-[var(--color-sw-red)]",
         isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
       )}
-      title={initialFavorited ? "Remove from favorites" : "Add to favorites"}
+      title={favorited ? "Remove from favorites" : "Add to favorites"}
     >
       <Heart
         size={13}
-        className={initialFavorited ? "fill-current" : ""}
+        className={favorited ? "fill-current" : ""}
       />
-      {initialFavorited ? "Saved" : "Save"}
+      {favorited ? "Saved" : "Save"}
     </button>
   );
 }

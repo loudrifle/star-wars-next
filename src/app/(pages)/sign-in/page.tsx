@@ -1,8 +1,16 @@
 import { SignInButtons } from "./_sign-in-buttons";
 
+/** Paths that must never be used as post-login redirect targets. */
+const BLOCKED_REDIRECT_PATHS = ["/sign-in", "/api"];
+
 /** Allow only same-origin relative paths to prevent open-redirect attacks. */
 function safeRedirectTo(url: string | undefined): string {
-  if (typeof url === "string" && url.startsWith("/") && !url.startsWith("//")) {
+  if (
+    typeof url === "string" &&
+    url.startsWith("/") &&
+    !url.startsWith("//") &&
+    !BLOCKED_REDIRECT_PATHS.some((p) => url.startsWith(p))
+  ) {
     return url;
   }
   return "/home";
