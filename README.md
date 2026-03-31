@@ -10,7 +10,7 @@ Built as a portfolio project to showcase modern full-stack development with the 
 - **TypeScript** — strict mode
 - **Turso** — serverless SQLite database (free tier)
 - **Drizzle ORM** — type-safe queries and migrations
-- **Auth.js v5** — GitHub/Google OAuth authentication
+- **Better Auth** — GitHub/Google OAuth authentication
 - **Tailwind CSS v4** — utility-first styling
 - **shadcn/ui** — accessible component primitives
 - **Sonner** — toast notifications
@@ -33,7 +33,7 @@ Built as a portfolio project to showcase modern full-stack development with the 
 
 ```
 src/
-├── actions/          # Server Actions (favorites, ratings)
+├── actions/          # Server Actions (favorites, ratings, auth sign-out)
 ├── app/
 │   ├── (pages)/      # Route group with navbar
 │   │   ├── home/         # Galaxy Explorer hub
@@ -46,7 +46,7 @@ src/
 │   │   ├── vehicles/[id]/
 │   │   └── profile/
 │   ├── api/
-│   │   ├── auth/     # Auth.js handler
+│   │   ├── auth/     # Better Auth handler ([...all])
 │   │   └── seed/     # One-time DB seed from SWAPI
 │   └── page.tsx      # Homepage (opening crawl)
 ├── components/
@@ -55,7 +55,8 @@ src/
 │   ├── schema.ts     # Drizzle schema (all tables)
 │   └── migrations/   # SQL migrations
 ├── lib/
-│   ├── auth.ts       # Auth.js config
+│   ├── auth.ts       # Better Auth server config
+│   ├── auth-client.ts# Better Auth client (useSession, signIn, signOut)
 │   ├── queries.ts    # DB read functions
 │   └── utils.ts      # Helpers
 └── types/            # TypeScript types
@@ -87,7 +88,9 @@ cp .env.local.example .env.local
 |---|---|
 | `TURSO_DATABASE_URL` | Your Turso database URL (`libsql://...`) |
 | `TURSO_AUTH_TOKEN` | Your Turso auth token |
-| `AUTH_SECRET` | Random secret — generate with `openssl rand -base64 32` |
+| `BETTER_AUTH_SECRET` | Random secret — generate with `openssl rand -base64 32` |
+| `BETTER_AUTH_URL` | Base URL of your app (e.g. `http://localhost:3000`) |
+| `NEXT_PUBLIC_APP_URL` | Same as above — exposed to the client |
 | `AUTH_GITHUB_ID` | GitHub OAuth App Client ID |
 | `AUTH_GITHUB_SECRET` | GitHub OAuth App Client Secret |
 | `AUTH_GOOGLE_ID` | Google OAuth Client ID (optional) |
