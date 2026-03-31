@@ -114,12 +114,3 @@ export interface AkababCharacter {
   image: string;
 }
 
-// ── Next Auth session augmentation ───────────────────────────────────────────
-
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-    } & import("next-auth").DefaultSession["user"];
-  }
-}

@@ -1,31 +1,33 @@
-import 'server-only';
+import "server-only";
 
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import NextAuth from "next-auth";
-import GitHub from "next-auth/providers/github";
-import Google from "next-auth/providers/google";
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { nextCookies } from "better-auth/next-js";
 
 import { db } from "@/db";
 import * as schema from "@/db/schema";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: DrizzleAdapter(db, {
-    usersTable: schema.users,
-    accountsTable: schema.accounts,
-    sessionsTable: schema.sessions,
-    verificationTokensTable: schema.verificationTokens,
+export const auth = betterAuth({
+  database: drizzleAdapter(db, {
+    provider: "sqlite",
+    schema: {
+      user: schema.user,
+      session: schema.session,
+      account: schema.account,
+      verification: schema.verification,
+    },
   }),
-  pages: {
-    signIn: "/sign-in",
-  },
-  providers: [
-    GitHub({ allowDangerousEmailAccountLinking: true }),
-    Google({ allowDangerousEmailAccountLinking: true }),
-  ],
-  callbacks: {
-    session({ session, user }) {
-      session.user.id = user.id;
-      return session;
+  socialProviders: {
+    github: {
+      clientId: process.env.AUTH_GITHUB_ID ?? "",
+      clientSecret: process.env.AUTH_GITHUB_SECRET ?? "",
+    },
+    google: {
+      clientId: process.env.AUTH_GOOGLE_ID ?? "",
+      clientSecret: process.env.AUTH_GOOGLE_SECRET ?? "",
     },
   },
+  plugins: [nextCookies()],
 });
+
+export type Session = typeof auth.$Infer.Session;

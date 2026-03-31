@@ -4,9 +4,9 @@ import { LogIn, LogOut, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { Session } from "next-auth";
 
 import { serverSignOut } from "@/actions/auth";
+import type { Session } from "@/lib/auth";
 
 export function AuthButton({ session }: { session: Session | null }) {
   const pathname = usePathname();
@@ -21,7 +21,7 @@ export function AuthButton({ session }: { session: Session | null }) {
           {session.user.image ? (
             <Image
               src={session.user.image}
-              alt={session.user.name ?? "User"}
+              alt={session.user.name}
               width={24}
               height={24}
               className="rounded-full border border-[var(--color-sw-border)]"

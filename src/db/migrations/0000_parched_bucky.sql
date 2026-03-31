@@ -1,17 +1,18 @@
-CREATE TABLE `accounts` (
-	`user_id` text NOT NULL,
-	`type` text NOT NULL,
-	`provider` text NOT NULL,
-	`provider_account_id` text NOT NULL,
-	`refresh_token` text,
-	`access_token` text,
-	`expires_at` integer,
-	`token_type` text,
+CREATE TABLE `account` (
+	`id` text PRIMARY KEY NOT NULL,
+	`accountId` text NOT NULL,
+	`providerId` text NOT NULL,
+	`userId` text NOT NULL,
+	`accessToken` text,
+	`refreshToken` text,
+	`idToken` text,
+	`accessTokenExpiresAt` integer,
+	`refreshTokenExpiresAt` integer,
 	`scope` text,
-	`id_token` text,
-	`session_state` text,
-	PRIMARY KEY(`provider`, `provider_account_id`),
-	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
+	`password` text,
+	`createdAt` integer NOT NULL,
+	`updatedAt` integer NOT NULL,
+	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `character_species` (
@@ -62,7 +63,7 @@ CREATE TABLE `favorites` (
 	`entity_type` text NOT NULL,
 	`entity_id` integer NOT NULL,
 	`created_at` integer NOT NULL,
-	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `film_characters` (
@@ -141,16 +142,22 @@ CREATE TABLE `ratings` (
 	`review` text,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
-	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE TABLE `sessions` (
-	`session_token` text PRIMARY KEY NOT NULL,
-	`user_id` text NOT NULL,
-	`expires` integer NOT NULL,
-	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
+CREATE TABLE `session` (
+	`id` text PRIMARY KEY NOT NULL,
+	`expiresAt` integer NOT NULL,
+	`token` text NOT NULL,
+	`createdAt` integer NOT NULL,
+	`updatedAt` integer,
+	`ipAddress` text,
+	`userAgent` text,
+	`userId` text NOT NULL,
+	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `session_token_unique` ON `session` (`token`);--> statement-breakpoint
 CREATE TABLE `species` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
@@ -189,16 +196,17 @@ CREATE TABLE `starships` (
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `starships_swapi_url_unique` ON `starships` (`swapi_url`);--> statement-breakpoint
-CREATE TABLE `users` (
+CREATE TABLE `user` (
 	`id` text PRIMARY KEY NOT NULL,
-	`name` text,
+	`name` text NOT NULL,
 	`email` text NOT NULL,
-	`email_verified` integer,
+	`emailVerified` integer DEFAULT false NOT NULL,
 	`image` text,
-	`created_at` integer
+	`createdAt` integer NOT NULL,
+	`updatedAt` integer NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);--> statement-breakpoint
+CREATE UNIQUE INDEX `user_email_unique` ON `user` (`email`);--> statement-breakpoint
 CREATE TABLE `vehicles` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
@@ -217,9 +225,11 @@ CREATE TABLE `vehicles` (
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `vehicles_swapi_url_unique` ON `vehicles` (`swapi_url`);--> statement-breakpoint
-CREATE TABLE `verification_tokens` (
+CREATE TABLE `verification` (
+	`id` text PRIMARY KEY NOT NULL,
 	`identifier` text NOT NULL,
-	`token` text NOT NULL,
-	`expires` integer NOT NULL,
-	PRIMARY KEY(`identifier`, `token`)
+	`value` text NOT NULL,
+	`expiresAt` integer NOT NULL,
+	`createdAt` integer,
+	`updatedAt` integer
 );

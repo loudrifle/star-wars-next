@@ -1,11 +1,11 @@
 "use client";
 
 import { Heart } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
 import { toggleFavorite } from "@/actions/favorites";
+import { useSession } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import type { EntityType } from "@/types";
 

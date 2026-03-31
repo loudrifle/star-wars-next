@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -25,7 +26,7 @@ export default async function StarshipDetailPage({ params }: Props) {
   const ship = await getStarshipById(shipId);
   if (!ship) notFound();
 
-  const session = await auth();
+  const session = await auth.api.getSession({ headers: await headers() });
   const userId = session?.user.id;
 
   const [favorited, ratingStats, userRating] = await Promise.all([

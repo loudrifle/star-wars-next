@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import Link from "next/link";
 
 import { auth } from "@/lib/auth";
@@ -17,7 +18,7 @@ const NAV_LINKS = [
 ] as const;
 
 export async function Navbar() {
-  const session = await auth();
+  const session = await auth.api.getSession({ headers: await headers() });
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--color-sw-border)] bg-[var(--color-sw-black)]/90 backdrop-blur-md">

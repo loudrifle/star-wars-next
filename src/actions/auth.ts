@@ -1,15 +1,16 @@
 "use server";
 
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-import { signOut } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 
 /** Protected routes: after sign-out the user can't stay there. */
 const PROTECTED_ROUTES = ["/profile"];
 
 export async function serverSignOut() {
-  const headersList = await headers();
-  const referer = headersList.get("referer");
+  const h = await headers();
+  const referer = h.get("referer");
 
   let redirectTo = "/home";
   if (referer) {
@@ -18,5 +19,6 @@ export async function serverSignOut() {
     redirectTo = isProtected ? "/home" : pathname;
   }
 
-  await signOut({ redirectTo });
+  await auth.api.signOut({ headers: h });
+  redirect(redirectTo);
 }

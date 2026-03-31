@@ -3,13 +3,21 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // ── Mocks ─────────────────────────────────────────────────────────────────────
 
+const mockGetSession = vi.hoisted(() => vi.fn());
 const mockGet = vi.hoisted(() => vi.fn());
 const mockInsertValues = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
 const mockDeleteWhere = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
 
 vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
-vi.mock("@/lib/auth", () => ({ auth: vi.fn() }));
+vi.mock("next/headers", () => ({ headers: vi.fn().mockResolvedValue(new Headers()) }));
+vi.mock("@/lib/auth", () => ({
+  auth: {
+    api: {
+      getSession: mockGetSession,
+    },
+  },
+}));
 vi.mock("@/db", () => ({
   db: {
     select: vi.fn(() => ({
@@ -25,9 +33,7 @@ vi.mock("@/db", () => ({
 import { revalidatePath } from "next/cache";
 
 import { toggleFavorite } from "@/actions/favorites";
-import { auth } from "@/lib/auth";
 
-const mockedAuth = vi.mocked(auth);
 const mockedRevalidatePath = vi.mocked(revalidatePath);
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
@@ -39,14 +45,14 @@ describe("toggleFavorite", () => {
 
   describe("auth guard", () => {
     it("throws when session is null", async () => {
-      mockedAuth.mockResolvedValue(null as never);
+      mockGetSession.mockResolvedValue(null);
       await expect(toggleFavorite("character", 1)).rejects.toThrow(
         "Not authenticated"
       );
     });
 
     it("throws when session has no user.id", async () => {
-      mockedAuth.mockResolvedValue({ user: {} } as never);
+      mockGetSession.mockResolvedValue({ user: {} });
       await expect(toggleFavorite("character", 1)).rejects.toThrow(
         "Not authenticated"
       );
@@ -55,7 +61,7 @@ describe("toggleFavorite", () => {
 
   describe("add favorite (none exists)", () => {
     beforeEach(() => {
-      mockedAuth.mockResolvedValue({ user: { id: "user-1" } } as never);
+      mockGetSession.mockResolvedValue({ user: { id: "user-1" } });
       mockGet.mockResolvedValue(undefined);
     });
 
@@ -84,6 +90,7 @@ describe("toggleFavorite", () => {
       ];
       for (const [entityType, expectedPath] of cases) {
         vi.clearAllMocks();
+        mockGetSession.mockResolvedValue({ user: { id: "user-1" } });
         mockGet.mockResolvedValue(undefined);
         await toggleFavorite(entityType, 1);
         expect(mockedRevalidatePath).toHaveBeenCalledWith(expectedPath);
@@ -93,7 +100,7 @@ describe("toggleFavorite", () => {
 
   describe("remove favorite (already exists)", () => {
     beforeEach(() => {
-      mockedAuth.mockResolvedValue({ user: { id: "user-1" } } as never);
+      mockGetSession.mockResolvedValue({ user: { id: "user-1" } });
       mockGet.mockResolvedValue({
         id: 99,
         userId: "user-1",

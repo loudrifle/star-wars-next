@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { Session } from "next-auth";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // ── Mocks ─────────────────────────────────────────────────────────────────────
@@ -32,16 +31,32 @@ vi.mock("next/navigation", () => ({
 }));
 
 import { serverSignOut } from "@/actions/auth";
-
 import { AuthButton } from "@/components/auth-button";
+import type { Session } from "@/lib/auth";
 
 const mockedServerSignOut = vi.mocked(serverSignOut);
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 const SESSION: Session = {
-  user: { id: "user-1", name: "Luke Skywalker", email: "luke@jedi.com" },
-  expires: "2099-01-01",
+  user: {
+    id: "user-1",
+    name: "Luke Skywalker",
+    email: "luke@jedi.com",
+    emailVerified: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  session: {
+    id: "sess-1",
+    token: "tok",
+    expiresAt: new Date(Date.now() + 86400000),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    userId: "user-1",
+    ipAddress: null,
+    userAgent: null,
+  },
 };
 
 const SESSION_WITH_IMAGE: Session = {

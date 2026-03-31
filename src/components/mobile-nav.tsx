@@ -4,10 +4,10 @@ import { LogIn, LogOut, Menu, User, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { Session } from "next-auth";
 import { useState } from "react";
 
 import { serverSignOut } from "@/actions/auth";
+import type { Session } from "@/lib/auth";
 
 interface NavLink {
   href: string;
@@ -65,7 +65,7 @@ export function MobileNav({ links, session }: MobileNavProps) {
                 {session.user.image ? (
                   <Image
                     src={session.user.image}
-                    alt={session.user.name ?? "User"}
+                    alt={session.user.name}
                     width={24}
                     height={24}
                     className="rounded-full border border-[var(--color-sw-border)]"

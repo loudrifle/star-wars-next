@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // ── Mocks ─────────────────────────────────────────────────────────────────────
 
+const mockGetSession = vi.hoisted(() => vi.fn());
 const mockGet = vi.hoisted(() => vi.fn());
 const mockInsertValues = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
 const mockUpdateSet = vi.hoisted(() =>
@@ -12,7 +13,14 @@ const mockDeleteWhere = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
 
 vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
-vi.mock("@/lib/auth", () => ({ auth: vi.fn() }));
+vi.mock("next/headers", () => ({ headers: vi.fn().mockResolvedValue(new Headers()) }));
+vi.mock("@/lib/auth", () => ({
+  auth: {
+    api: {
+      getSession: mockGetSession,
+    },
+  },
+}));
 vi.mock("@/db", () => ({
   db: {
     select: vi.fn(() => ({
@@ -29,9 +37,7 @@ vi.mock("@/db", () => ({
 import { revalidatePath } from "next/cache";
 
 import { deleteRating, upsertRating } from "@/actions/ratings";
-import { auth } from "@/lib/auth";
 
-const mockedAuth = vi.mocked(auth);
 const mockedRevalidatePath = vi.mocked(revalidatePath);
 
 // ── upsertRating ──────────────────────────────────────────────────────────────
@@ -57,14 +63,14 @@ describe("upsertRating", () => {
 
   describe("auth guard", () => {
     it("throws when session is null", async () => {
-      mockedAuth.mockResolvedValue(null as never);
+      mockGetSession.mockResolvedValue(null);
       await expect(upsertRating("film", 1, 3)).rejects.toThrow(
         "Not authenticated"
       );
     });
 
     it("throws when session has no user.id", async () => {
-      mockedAuth.mockResolvedValue({ user: {} } as never);
+      mockGetSession.mockResolvedValue({ user: {} });
       await expect(upsertRating("film", 1, 3)).rejects.toThrow(
         "Not authenticated"
       );
@@ -73,7 +79,7 @@ describe("upsertRating", () => {
 
   describe("insert (no existing rating)", () => {
     beforeEach(() => {
-      mockedAuth.mockResolvedValue({ user: { id: "user-1" } } as never);
+      mockGetSession.mockResolvedValue({ user: { id: "user-1" } });
       mockGet.mockResolvedValue(undefined);
     });
 
@@ -98,7 +104,7 @@ describe("upsertRating", () => {
 
   describe("update (existing rating)", () => {
     beforeEach(() => {
-      mockedAuth.mockResolvedValue({ user: { id: "user-1" } } as never);
+      mockGetSession.mockResolvedValue({ user: { id: "user-1" } });
       mockGet.mockResolvedValue({
         id: 10,
         userId: "user-1",
@@ -133,14 +139,14 @@ describe("deleteRating", () => {
 
   describe("auth guard", () => {
     it("throws when session is null", async () => {
-      mockedAuth.mockResolvedValue(null as never);
+      mockGetSession.mockResolvedValue(null);
       await expect(deleteRating("character", 5)).rejects.toThrow(
         "Not authenticated"
       );
     });
 
     it("throws when session has no user.id", async () => {
-      mockedAuth.mockResolvedValue({ user: {} } as never);
+      mockGetSession.mockResolvedValue({ user: {} });
       await expect(deleteRating("character", 5)).rejects.toThrow(
         "Not authenticated"
       );
@@ -149,7 +155,7 @@ describe("deleteRating", () => {
 
   describe("delete", () => {
     beforeEach(() => {
-      mockedAuth.mockResolvedValue({ user: { id: "user-1" } } as never);
+      mockGetSession.mockResolvedValue({ user: { id: "user-1" } });
     });
 
     it("revalidates /profile and entity page", async () => {

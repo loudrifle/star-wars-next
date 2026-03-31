@@ -2,6 +2,7 @@
 
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 
 import { db } from "@/db";
 import { favorites } from "@/db/schema";
@@ -18,7 +19,7 @@ const ENTITY_PATHS: Record<string, string> = {
 };
 
 export async function toggleFavorite(entityType: EntityType, entityId: number) {
-  const session = await auth();
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user.id) throw new Error("Not authenticated");
 
   const userId = session.user.id;

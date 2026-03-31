@@ -1,5 +1,6 @@
 import { eq, inArray } from "drizzle-orm";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -40,7 +41,7 @@ const ENTITY_PATHS: Record<string, string> = {
 };
 
 export default async function ProfilePage() {
-  const session = await auth();
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user.id) redirect("/");
 
   const userId = session.user.id;
@@ -103,7 +104,7 @@ export default async function ProfilePage() {
         {session.user.image && (
           <Image
             src={session.user.image}
-            alt={session.user.name ?? "User"}
+            alt={session.user.name}
             width={56}
             height={56}
             className="rounded-full border-2 border-[var(--color-sw-border)]"

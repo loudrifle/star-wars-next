@@ -2,6 +2,7 @@
 
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 
 import { db } from "@/db";
 import { ratings } from "@/db/schema";
@@ -25,7 +26,7 @@ export async function upsertRating(
 ) {
   if (score < 1 || score > 5) throw new Error("Score must be between 1 and 5");
 
-  const session = await auth();
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user.id) throw new Error("Not authenticated");
 
   const userId = session.user.id;
@@ -62,7 +63,7 @@ export async function deleteRating(
   entityType: EntityType,
   entityId: number
 ) {
-  const session = await auth();
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user.id) throw new Error("Not authenticated");
 
   await db
