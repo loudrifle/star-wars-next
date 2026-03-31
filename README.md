@@ -28,6 +28,8 @@ Built as a portfolio project to showcase modern full-stack development with the 
 - ❤️ Save favorites (requires login)
 - ⭐ Rate any entity 1–5 stars (requires login)
 - 👤 Personal profile page with your favorites and ratings
+- 🏆 Community ratings leaderboard — top-rated entities by category
+- 🛡️ Admin dashboard — site-wide stats and top entities (email-gated)
 
 ## Project Structure
 
@@ -44,7 +46,9 @@ src/
 │   │   ├── species/[id]/
 │   │   ├── starships/[id]/
 │   │   ├── vehicles/[id]/
-│   │   └── profile/
+│   │   ├── profile/
+│   │   ├── ratings/      # Community ratings leaderboard
+│   │   └── admin/        # Admin dashboard (ADMIN_EMAIL-gated)
 │   ├── api/
 │   │   ├── auth/     # Better Auth handler ([...all])
 │   │   └── seed/     # One-time DB seed from SWAPI
@@ -96,6 +100,7 @@ cp .env.local.example .env.local
 | `AUTH_GOOGLE_ID` | Google OAuth Client ID (optional) |
 | `AUTH_GOOGLE_SECRET` | Google OAuth Client Secret (optional) |
 | `SEED_SECRET` | Any string — used to protect the seed endpoint |
+| `ADMIN_EMAIL` | Email address of the admin user (grants access to `/admin`) |
 
 **GitHub OAuth App** — create one at github.com/settings/developers:
 - Homepage URL: `http://localhost:3000`
