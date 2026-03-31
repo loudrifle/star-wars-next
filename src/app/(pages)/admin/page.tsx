@@ -32,7 +32,7 @@ export default async function AdminPage() {
   const session = await auth.api.getSession({ headers: await headers() });
 
   const adminEmail = process.env.ADMIN_EMAIL;
-  if (!session?.user?.email || session.user.email !== adminEmail) {
+  if (!session?.user.email || session.user.email !== adminEmail) {
     notFound();
   }
 

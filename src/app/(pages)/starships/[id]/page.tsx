@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ship = await getStarshipById(parseInt(id));
   const name = ship?.name ?? "Starship";
   const description = ship
-    ? `${name} — ${ship.starshipClass ?? "unknown"} class starship. Hyperdrive rating: ${ship.hyperdriveRating ?? "unknown"}, crew: ${ship.crew ?? "unknown"}.`
+    ? `${name} — ${ship.starshipClass} class starship. Hyperdrive rating: ${ship.hyperdriveRating}, crew: ${ship.crew}.`
     : "Star Wars starship on Galaxy Explorer.";
   return {
     title: name,

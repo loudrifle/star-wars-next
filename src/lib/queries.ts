@@ -577,7 +577,7 @@ export async function getAdminStats() {
   return {
     totalRatings: ratingsTotal?.total ?? 0,
     totalFavorites: favoritesTotal?.total ?? 0,
-    activeUsers: Number(activeUsersResult?.total ?? 0),
+    activeUsers: activeUsersResult?.total ?? 0,
     totalUsers: totalUsersResult?.total ?? 0,
     topEntities,
   };

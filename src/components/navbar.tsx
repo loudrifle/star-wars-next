@@ -21,7 +21,7 @@ const BASE_LINKS = [
 export async function Navbar() {
   const session = await auth.api.getSession({ headers: await headers() });
 
-  const isAdmin = session?.user?.email && session.user.email === process.env.ADMIN_EMAIL;
+  const isAdmin = session?.user.email && session.user.email === process.env.ADMIN_EMAIL;
   const NAV_LINKS: readonly { href: string; label: string }[] = isAdmin
     ? [...BASE_LINKS, { href: "/admin", label: "Admin" }]
     : BASE_LINKS;

@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const film = await getFilmById(parseInt(id));
   const title = film?.title ?? "Film";
   const description = film
-    ? `${title} — directed by ${film.director}, released ${film.releaseDate?.slice(0, 4) ?? "unknown"}. Explore the complete cast, planets, starships and more.`
+    ? `${title} — directed by ${film.director}, released ${film.releaseDate.slice(0, 4)}. Explore the complete cast, planets, starships and more.`
     : "Star Wars film on Galaxy Explorer.";
   return {
     title,

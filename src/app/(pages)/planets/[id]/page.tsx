@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const planet = await getPlanetById(parseInt(id));
   const name = planet?.name ?? "Planet";
   const description = planet
-    ? `${name} — ${planet.climate ?? "unknown"} climate, ${planet.terrain ?? "unknown"} terrain. Population: ${planet.population ?? "unknown"}.`
+    ? `${name} — ${planet.climate} climate, ${planet.terrain} terrain. Population: ${planet.population}.`
     : "Star Wars planet on Galaxy Explorer.";
   return {
     title: name,

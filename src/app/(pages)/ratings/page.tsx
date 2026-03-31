@@ -34,9 +34,13 @@ function Stars({ score }: { score: number }) {
 export default async function RatingsPage() {
   const topEntities = await getTopRatedEntities(10);
 
-  const grouped = topEntities.reduce<Record<string, typeof topEntities>>((acc, entity) => {
-    if (!acc[entity.entityType]) acc[entity.entityType] = [];
-    acc[entity.entityType].push(entity);
+  const grouped = topEntities.reduce<Partial<Record<string, typeof topEntities>>>((acc, entity) => {
+    const existing = acc[entity.entityType];
+    if (existing) {
+      existing.push(entity);
+    } else {
+      acc[entity.entityType] = [entity];
+    }
     return acc;
   }, {});
 
@@ -52,7 +56,7 @@ export default async function RatingsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {orderedTypes.map((type) => {
           const entries = grouped[type];
-          if (!entries?.length) return null;
+          if (!entries?.length) return null; // entries may be undefined for types with no ratings
 
           return (
             <section key={type}>

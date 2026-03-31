@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const v = await getVehicleById(parseInt(id));
   const name = v?.name ?? "Vehicle";
   const description = v
-    ? `${name} — ${v.vehicleClass ?? "unknown"} class vehicle. Max speed: ${v.maxAtmospheringSpeed ?? "unknown"}, crew: ${v.crew ?? "unknown"}.`
+    ? `${name} — ${v.vehicleClass} class vehicle. Max speed: ${v.maxAtmospheringSpeed}, crew: ${v.crew}.`
     : "Star Wars vehicle on Galaxy Explorer.";
   return {
     title: name,

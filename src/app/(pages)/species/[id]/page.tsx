@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const s = await getSpeciesById(parseInt(id));
   const name = s?.name ?? "Species";
   const description = s
-    ? `${name} — ${s.classification ?? "unknown"} species, ${s.designation ?? "unknown"} designation. Language: ${s.language ?? "unknown"}.`
+    ? `${name} — ${s.classification} species, ${s.designation} designation. Language: ${s.language}.`
     : "Star Wars species on Galaxy Explorer.";
   return {
     title: name,

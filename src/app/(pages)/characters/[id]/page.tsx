@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const character = await getCharacterById(parseInt(id));
   const name = character?.name ?? "Character";
   const description = character
-    ? `${name} — born ${character.birthYear ?? "unknown"}, ${character.gender ?? "unknown"} character from the Star Wars universe.`
+    ? `${name} — born ${character.birthYear}, ${character.gender} character from the Star Wars universe.`
     : "Star Wars character profile on Galaxy Explorer.";
   return {
     title: name,
