@@ -12,7 +12,7 @@ Built as a portfolio project to showcase modern full-stack development with the 
 - **Drizzle ORM** — type-safe queries and migrations
 - **Better Auth** — GitHub/Google OAuth authentication
 - **Tailwind CSS v4** — utility-first styling
-- **shadcn/ui** — accessible component primitives
+- **shadcn-style components** — hand-written accessible UI primitives (no shadcn package dependency)
 - **Sonner** — toast notifications
 - **Vitest** + **React Testing Library** — unit and component tests
 
@@ -37,24 +37,20 @@ Built as a portfolio project to showcase modern full-stack development with the 
 src/
 ├── actions/          # Server Actions (favorites, ratings, auth sign-out)
 ├── app/
-│   ├── (pages)/      # Route group with navbar
+│   ├── (pages)/      # Route group with shared navbar layout
 │   │   ├── home/         # Galaxy Explorer hub
 │   │   ├── sign-in/      # OAuth provider selection
-│   │   ├── characters/[id]/
-│   │   ├── films/[id]/
-│   │   ├── planets/[id]/
-│   │   ├── species/[id]/
-│   │   ├── starships/[id]/
-│   │   ├── vehicles/[id]/
-│   │   ├── profile/
+│   │   ├── [entity]/     # Dynamic list pages (films, characters, planets…)
+│   │   │   └── [id]/     # Dynamic detail pages
+│   │   ├── profile/      # User favorites & ratings (auth-protected)
 │   │   ├── ratings/      # Community ratings leaderboard
 │   │   └── admin/        # Admin dashboard (ADMIN_EMAIL-gated)
 │   ├── api/
 │   │   ├── auth/     # Better Auth handler ([...all])
 │   │   └── seed/     # One-time DB seed from SWAPI
-│   └── page.tsx      # Homepage (opening crawl)
+│   └── page.tsx      # Homepage (opening crawl, no navbar)
 ├── components/
-│   └── ui/           # Button, Badge, Skeleton, Input
+│   └── ui/           # Hand-written shadcn-style primitives (Button, Badge, Skeleton, Input)
 ├── db/
 │   ├── schema.ts     # Drizzle schema (all tables)
 │   └── migrations/   # SQL migrations
@@ -63,6 +59,7 @@ src/
 │   ├── auth-client.ts# Better Auth client (useSession, signIn, signOut)
 │   ├── queries.ts    # DB read functions
 │   └── utils.ts      # Helpers
+├── proxy.ts          # Next.js middleware — redirects unauthenticated /profile to /sign-in
 └── types/            # TypeScript types
 ```
 
