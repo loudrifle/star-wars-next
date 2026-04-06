@@ -1,5 +1,5 @@
-import { DetailPageSkeleton } from "@/components/skeletons";
+import { PlanetDetailSkeleton } from "@/components/skeletons";
 
 export default function Loading() {
-  return <DetailPageSkeleton />;
+  return <PlanetDetailSkeleton />;
 }

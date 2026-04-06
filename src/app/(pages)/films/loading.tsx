@@ -1,5 +1,4 @@
-import { PageHeaderSkeleton } from "@/components/skeletons";
-import { Skeleton } from "@/components/ui/skeleton";
+import { FilmCardSkeleton, PageHeaderSkeleton } from "@/components/skeletons";
 
 export default function Loading() {
   return (
@@ -7,14 +6,7 @@ export default function Loading() {
       <PageHeaderSkeleton />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="entity-card p-7 flex flex-col gap-4">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-10 w-4/5" />
-            <div className="flex items-center gap-4 mt-auto pt-4 border-t border-[var(--color-sw-border)]">
-              <Skeleton className="h-4 w-32" />
-              <Skeleton className="h-4 w-10 ml-auto" />
-            </div>
-          </div>
+          <FilmCardSkeleton key={i} />
         ))}
       </div>
     </div>
